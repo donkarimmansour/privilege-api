@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
-const bcrypt = require("bcryptjs")
 
-const StudentSchema = mongoose.Schema({
+const TeacherSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -9,6 +8,7 @@ const StudentSchema = mongoose.Schema({
     },
 
     firstname: {
+        type: String,
         type: String,
         required: true,
         trim: true,
@@ -61,49 +61,30 @@ const StudentSchema = mongoose.Schema({
         required: true,
         enum : ["no" , "yes"] ,
     } ,
-    // className: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    //     trim: true,
-    //     ref : "course"
-    // },
-
-    // group: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: false,
-    //     trim: true,
-    //     ref : "group"
-    // },
-
-
-    // level: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: false,
-    //     trim: true,
-    //     ref : "level"
-    // },
-
-    hours: {
-        type: Number,
+    teach: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
+        trim: true,
+        ref : "course"
+    },
+
+    
+    website: {
+        type: String,
+        required: false,
         trim: true,
     },
 
-    option: {
+    note: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
 
-    session: {
+    
+    facebook: {
         type: String,
-        required: true,
-        trim: true,
-    },
-
-    cin: {
-        type: String,
-        required: true,
+        required: false,
         trim: true,
     },
   
@@ -136,16 +117,6 @@ const StudentSchema = mongoose.Schema({
 })
 
 
-// hash Password
-StudentSchema.methods.hashPassword = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-}
+const TeachersRquest = mongoose.model("teacher", TeacherSchema)
 
-// compare Password
-StudentSchema.methods.comparePassword = function (password) {
-    return bcrypt.compareSync(password, this.password)
-}
-
-const StudentsRquest = mongoose.model("student", StudentSchema)
-
-module.exports =  StudentsRquest
+module.exports =  TeachersRquest

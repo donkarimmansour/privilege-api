@@ -14,14 +14,17 @@ const ApiEndpoints = {
     me: `/me`, 
   },
 
-  // Professors: { 
-  //   route: `${Host.PREFIX}/professors`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Professors: { 
+    route: `${Host.PREFIX}/professors`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+    image: `/image/:id` ,
+    profileEdit: `/profileEdit/:id`, 
+
+  },
 
   Students: { 
     route: `${Host.PREFIX}/students`, 
@@ -35,25 +38,25 @@ const ApiEndpoints = {
     },
 
   
-  // Groupes: { 
-  //   route: `${Host.PREFIX}/groupes`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Groupes: { 
+    route: `${Host.PREFIX}/groupes`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+  },
 
 
   
-  // Levels: { 
-  //   route: `${Host.PREFIX}/levels`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Levels: { 
+    route: `${Host.PREFIX}/levels`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+  },
 
   // Notifications: { 
   //   route: `${Host.PREFIX}/notifications`, 
@@ -62,23 +65,25 @@ const ApiEndpoints = {
   // },
 
   
-  // Department: { 
-  //   route: `${Host.PREFIX}/department`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Department: { 
+    route: `${Host.PREFIX}/department`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+  },
 
-  // Course: { 
-  //   route: `${Host.PREFIX}/course`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Course: { 
+    route: `${Host.PREFIX}/course`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+    image: `/image/:id`
+
+  },
 
   // Exam: { 
   //   route: `${Host.PREFIX}/exam`, 
@@ -93,24 +98,24 @@ const ApiEndpoints = {
   // },
 
 
-  // Library: { 
-  //   route: `${Host.PREFIX}/library`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Library: { 
+    route: `${Host.PREFIX}/library`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+  },
 
 
-  // Payments: { 
-  //   route: `${Host.PREFIX}/payments`, 
-  //   create: `/create`, 
-  //   edit: `/edit`, 
-  //   delete: `/delete`, 
-  //   count: `/count`, 
-  //   list: `/list`, 
-  // },
+  Payments: { 
+    route: `${Host.PREFIX}/payments`, 
+    create: `/create`, 
+    edit: `/edit`, 
+    delete: `/delete`, 
+    count: `/count`, 
+    list: `/list`, 
+  },
  
   // Chat: { 
   //   route: `${Host.PREFIX}/chat`, 
