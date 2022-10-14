@@ -1,29 +1,26 @@
-const GroupsRquest = require("../models/group")
+const NotificationsRquest = require("../models/notification")
 
-// get All Groups
-const getAllGroups = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
-
-    const newExpend = expend === "all" ? [{path: 'className', model: 'course'}] : expend
+// get All Notifications
+const getAllNotifications = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
 
     return new Promise((resolve, reject) => {
 
-        GroupsRquest.find({}, (errFind, groups) => {
+        NotificationsRquest.find({}, (errFind, notifications) => { 
 
 
             if (errFind) {
                 reject(errFind)
-            } else if (groups.length <= 0) {
-                reject("there are no Groups")
+            } else if (notifications.length <= 0) {
+                reject("there are no notifications")
             } else {
+ 
 
+                resolve(notifications)
 
-                resolve(groups)
-
-            } 
+            }
 
 
         })
-            .populate(newExpend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -34,60 +31,42 @@ const getAllGroups = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = 
     })
 }
 
-// get All Groups Count
-const getAllGroupsCount = (filter = '{"username" : { "$ne": "x" }}') => {
-
-    return new Promise((resolve, reject) => {
-
-        GroupsRquest.find({}, (errFind, groups) => {
-
-            if (errFind) {
-                reject(errFind)
-            } else if (groups.length <= 0) {
-                reject("there are no Groups")
-            } else {
 
 
-                resolve(groups)
-
-            }
-
-
-        }).count({ ...JSON.parse(filter) })
-
-    }) 
-}
-
-// create Group
-const createGroup = (name, className) => {
+// create Notification
+const createNotification = (data) => {
 
     return new Promise((resolve, reject) => { // check email
 
-                // inser a new Group
-                GroupsRquest.create({
-                    name, className
-
+                // inser a new Notification
+                NotificationsRquest.create({
+                    data
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
                         return
                     }
-
-
                     resolve(res._id)
-
 
                 })
     })
 }
 
-// edit Group
-const editGroup = (id, name, className) => {
-    return new Promise((resolve, reject) => { // update Group
+// edit Notification
+const editNotification = (id, data) => {
+    return new Promise((resolve, reject) => { // update Notification
+        // check id
+        NotificationsRquest.findOne({}, (errFind, notification) => {
 
- 
-                GroupsRquest.updateOne({}, {
-                    name, className , updatedAt: Date.now() 
+            if (errFind) {
+                reject(errFind)
+            } else if (!notification) {
+                reject("id not exist")
+            }else {
+
+                NotificationsRquest.updateOne({}, {
+                    data ,
+                    updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)
@@ -104,27 +83,34 @@ const editGroup = (id, name, className) => {
                     }
 
                 }).where("_id").equals(id)
+
+            }
+
+        }).where("_id").equals(id)
+
+
+
     })
 }
 
 
 
-// delete Group
-const deleteGroup = (id) => {
+// delete Notification
+const deleteNotification = (id) => {
 
     return new Promise((resolve, reject) => {
 
         // check id
-        GroupsRquest.findOne({}, (errFind, group) => {
+        NotificationsRquest.findOne({}, (errFind, notification) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!group) {
+            } else if (!notification) {
                 reject("id not exist")
             } else {
 
                 //delete
-                GroupsRquest.deleteOne({}
+                NotificationsRquest.deleteOne({}
                     , (errUpdate, doc) => {
                         if (errUpdate) {
                             reject(errUpdate)
@@ -146,4 +132,4 @@ const deleteGroup = (id) => {
 }
 
 
-module.exports = { getAllGroups, getAllGroupsCount, createGroup, editGroup , deleteGroup  }
+module.exports = { getAllNotifications, createNotification, editNotification, deleteNotification  }

@@ -9,7 +9,7 @@ const StudentValidator= [
    check("phone").notEmpty().withMessage("phone field is required") ,
    check("birthday").notEmpty().withMessage("birthday field is required") ,
    check("gender").notEmpty().withMessage("gender field is required") ,
-   //check("className").notEmpty().withMessage("class field is required") ,
+   check("className").notEmpty().withMessage("class field is required") ,
    check("hours").notEmpty().withMessage("hours field is required") ,
    check("option").notEmpty().withMessage("option field is required") ,
    check("session").notEmpty().withMessage("session field is required") ,
@@ -93,6 +93,15 @@ const TeacherValidator = [
    check("teach").notEmpty().withMessage("teach field is required"),
 ]
 
+const SmtpValidator = [
+ 
+]
+
+const NotificationValidator = [
+ 
+]
+
+
 
 
 module.exports = {
@@ -107,5 +116,7 @@ module.exports = {
    LevelValidator , 
    PaymentValidator ,
    TeacherValidator ,
-   BookValidator
+   BookValidator ,
+   SmtpValidator ,
+   NotificationValidator
 }

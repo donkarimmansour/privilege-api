@@ -1,4 +1,4 @@
-const DepartmentModel = require("../services/departmant")
+const DepartmentModel = require("../services/department")
 const codes = require("../common/codes")
 
 

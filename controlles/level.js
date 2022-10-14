@@ -27,9 +27,9 @@ const getAllLevelsCount = (req, res) => {
 
 // create Level
 const createLevel = (req, res) => {
-    const { name, Level, department, position} = req.body;
+    const { name, group, department, position} = req.body;
 
-    LevelModel.createLevel(name, Level, department, position).then(result => {
+    LevelModel.createLevel(name, group, department, position).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createLevel = (req, res) => {
 
 // edit Levels
 const editLevel = (req, res) => {
-    const { name, Level, department, position} = req.body;
+    const { name, group, department, position} = req.body;
     const { id } = req.params;
 
-    LevelModel.editLevel(id, name, Level, department, position).then(result => {
+    LevelModel.editLevel(id, name, group, department, position).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

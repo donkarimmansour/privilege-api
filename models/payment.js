@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const PaymentSchema = mongoose.Schema({
+const PaymentSchema = mongoose.Schema({ 
 
     studentID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -8,7 +8,6 @@ const PaymentSchema = mongoose.Schema({
         trim: true,
         ref : "student",
     },
-
 
     paymentStatus: {
         type: String,

@@ -17,8 +17,8 @@ const ApiEndpoints = {
   Professors: { 
     route: `${Host.PREFIX}/professors`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
     image: `/image/:id` ,
@@ -41,8 +41,8 @@ const ApiEndpoints = {
   Groupes: { 
     route: `${Host.PREFIX}/groupes`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
   },
@@ -52,24 +52,17 @@ const ApiEndpoints = {
   Levels: { 
     route: `${Host.PREFIX}/levels`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
   },
-
-  // Notifications: { 
-  //   route: `${Host.PREFIX}/notifications`, 
-  //   list: `/list`, 
-  //   create: `/create`, 
-  // },
-
   
   Department: { 
     route: `${Host.PREFIX}/department`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
   },
@@ -77,32 +70,40 @@ const ApiEndpoints = {
   Course: { 
     route: `${Host.PREFIX}/course`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
     image: `/image/:id`
 
   },
 
-  // Exam: { 
-  //   route: `${Host.PREFIX}/exam`, 
-  //   create: `/create`, 
-  //   list: `/list`, 
-  // },
+  Notifications: { 
+    route: `${Host.PREFIX}/notifications`, 
+    list: `/list`, 
+    create: `/create`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
+  },
 
-  // Smtp: { 
-  //   route: `${Host.PREFIX}/smtp`, 
-  //   edit: `/edit`, 
-  //   list: `/list`, 
-  // },
+
+  Exam: { 
+    route: `${Host.PREFIX}/exam`, 
+    list: `/list`, 
+  },
+
+  Smtp: { 
+    route: `${Host.PREFIX}/smtp`, 
+    edit: `/edit`, 
+    list: `/list`, 
+  },
 
 
   Library: { 
     route: `${Host.PREFIX}/library`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
   },
@@ -111,8 +112,8 @@ const ApiEndpoints = {
   Payments: { 
     route: `${Host.PREFIX}/payments`, 
     create: `/create`, 
-    edit: `/edit`, 
-    delete: `/delete`, 
+    edit: `/edit/:id`, 
+    delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
   },

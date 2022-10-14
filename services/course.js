@@ -1,7 +1,7 @@
 const CoursesRquest = require("../models/course")
 
 // get All Courses
-const getAllCourses = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+const getAllCourses = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
 
     return new Promise((resolve, reject) => {
 
@@ -21,7 +21,6 @@ const getAllCourses = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter =
 
 
         })
-            .populate(expend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -178,6 +177,6 @@ const deleteCourse = (id) => {
 
     })
 }
-
-
+ 
+ 
 module.exports = { getAllCourses, getAllCoursesCount, createCourse, editCourse, editCourseImage, deleteCourse  }

@@ -4,9 +4,9 @@ const codes = require("../common/codes")
  
 // get All Courses
 const getAllCourses = (req, res) => {
-    const { sort, limit, skip, filter, select, expend } = req.query;
+    const { sort, limit, skip, filter, select } = req.query;
 
-    CourseModel.getAllCourses(sort, limit, skip, filter, select, expend).then(result => {
+    CourseModel.getAllCourses(sort, limit, skip, filter, select).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

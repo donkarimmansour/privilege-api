@@ -17,7 +17,7 @@ const LevelSchema = mongoose.Schema({
         required: true,
         trim: true,
         ref : "department"
-    },
+    }, 
     position: { 
         type: Number,
         required: true,

@@ -1,28 +1,24 @@
 const mongoose = require("mongoose")
 
-const BookSchema = mongoose.Schema({
-    title: {
-        type: String,
+const SmtpSchema = mongoose.Schema({
+    headOfSmtp: {
+        type: String, 
         required: true,
-        trim: true,
+        trim: true, 
     },
 
-    status: {
+    SmtpName: { 
         type: String,
         required: true,
         trim: true,
     },
-    language: {
+    brief: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
-    level: { 
-        type: String,
-        required: true,
-        trim: true,
-    },
-
+  
+   
     createdAt: {
         type: Date,
         default: Date.now()
@@ -35,8 +31,6 @@ const BookSchema = mongoose.Schema({
    
 })
 
+const SmtpRquest = mongoose.model("smtp", SmtpSchema)
 
-
-const BooksRquest = mongoose.model("book", BookSchema)
-
-module.exports =  BooksRquest
+module.exports =  SmtpRquest

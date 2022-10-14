@@ -5,6 +5,9 @@ const getAllTeachers = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
     return new Promise((resolve, reject) => {
 
+
+        const newExpend = expend === "all" ? [{path: 'teach', model: 'course'}] : expend
+
         TeachersRquest.find({}, (errFind, teachers) => {
 
 
@@ -21,7 +24,7 @@ const getAllTeachers = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
 
         })
-            .populate(expend)
+            .populate(newExpend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))

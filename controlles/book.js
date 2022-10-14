@@ -4,9 +4,9 @@ const codes = require("../common/codes")
 
 // get All Books
 const getAllBooks = (req, res) => {
-    const { sort, limit, skip, filter, select, expend } = req.query;
+    const { sort, limit, skip, filter, select } = req.query;
 
-    BookModel.getAllBooks(sort, limit, skip, filter, select, expend).then(result => {
+    BookModel.getAllBooks(sort, limit, skip, filter, select).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

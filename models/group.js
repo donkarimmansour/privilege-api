@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const GroupSchema = mongoose.Schema({
-    title: {
+    name: {
         type: String,
         required: true,
         trim: true,
@@ -12,7 +12,6 @@ const GroupSchema = mongoose.Schema({
         required: true,
         trim: true,
         ref : "course"
- 
     },
 
     createdAt: {

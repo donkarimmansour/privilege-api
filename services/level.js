@@ -5,6 +5,9 @@ const getAllLevels = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = 
 
     return new Promise((resolve, reject) => {
 
+        const newExpend = expend === "all" ? [{path: 'department', model: 'department'}, {path: 'group',model: 'group' ,  populate: {path : "className" , model : "course"}}] : expend
+
+
         LevelsRquest.find({}, (errFind, levels) => {
 
 
@@ -21,7 +24,7 @@ const getAllLevels = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = 
 
 
         })
-            .populate(expend)
+            .populate(newExpend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -57,13 +60,13 @@ const getAllLevelsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Level
-const createLevel = (name, Level, department, position) => {
+const createLevel = (name, group, department, position) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Level
                 LevelsRquest.create({
-                    name, Level, department, position
+                    name, group, department, position
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -79,7 +82,7 @@ const createLevel = (name, Level, department, position) => {
 }
 
 // edit Level
-const editLevel = (id, name, Level, department, position) => {
+const editLevel = (id, name, group, department, position) => {
     return new Promise((resolve, reject) => { // update Level
         // check id
         LevelsRquest.findOne({}, (errFind, Level) => {
@@ -91,7 +94,7 @@ const editLevel = (id, name, Level, department, position) => {
             }else {
 
                 LevelsRquest.updateOne({}, {
-                    name, Level, department, position , updatedAt: Date.now() 
+                    name, group, department, position , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

@@ -2,7 +2,7 @@ const messages = require("../common/messages")
 const mailer = require("../common/mailer")
 const JWt = require("jsonwebtoken")
 const StudentRquest = require("../models/student")
-
+const TeachersRquest = require("../models/teacher")
 
 
 // SignIn
@@ -14,9 +14,8 @@ const SignIn = (email, password , role) => {
 
         if(role === "student"){
             Rquest = StudentRquest
-            
-        }else if ( 7 > 8 ){
-
+        }else if (role === "teacher"){
+            Rquest = TeachersRquest
         }
         
         Rquest.findOne({}, (errFind, user) => {
@@ -27,7 +26,7 @@ const SignIn = (email, password , role) => {
                 reject("email or username or password is incorrect")
            
             }else {
-                if(!user.isAccountActivated){ 
+                if(user.isAccountActivated === "no"){ 
                     reject("your account is not activated")
                 }else{
                     
@@ -56,8 +55,8 @@ const forgotPassword = (email , role) => {
 
         if(role === "student"){
             Rquest = StudentRquest
-        }else if ( 7 > 8 ){
-
+        }else if (role === "teacher"){
+            Rquest = TeachersRquest
         }
 
        // check id

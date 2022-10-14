@@ -27,9 +27,9 @@ const getAllGroupsCount = (req, res) => {
 
 // create Group
 const createGroup = (req, res) => {
-    const {title, className} = req.body;
+    const {name, className} = req.body;
 
-    GroupModel.createGroup(title, className).then(result => {
+    GroupModel.createGroup(name, className).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createGroup = (req, res) => {
 
 // edit Groups
 const editGroup = (req, res) => {
-    const { title, className} = req.body;
+    const { name, className} = req.body;
     const { id } = req.params;
 
-    GroupModel.editGroup(id , title, className).then(result => {
+    GroupModel.editGroup(id , name, className).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

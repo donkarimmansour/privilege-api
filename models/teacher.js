@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const bcrypt = require("bcryptjs")
 
 const TeacherSchema = mongoose.Schema({
     username: {
@@ -115,6 +116,18 @@ const TeacherSchema = mongoose.Schema({
 
    
 })
+
+
+// hash Password
+TeacherSchema.methods.hashPassword = (password) => {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+}
+
+// compare Password
+TeacherSchema.methods.comparePassword = function (password) {
+    return bcrypt.compareSync(password, this.password)
+}
+
 
 
 const TeachersRquest = mongoose.model("teacher", TeacherSchema)

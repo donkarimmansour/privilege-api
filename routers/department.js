@@ -1,13 +1,13 @@
-const DepartmentControlles = require("../controlles/departmant")
+const DepartmentControlles = require("../controlles/department")
 const {  handleError , idValidator , passport , ApiEndpoints , HandleValidatorError} = require("../common/routersImports")
 const router = require("express").Router()
 const { DepartmentValidator  } = require("../middlewares/validators")
 
 // getall Department
-router.get(ApiEndpoints.Department.list , passport.authenticate("admin", {session: false}) ,  DepartmentControlles.getAllDepartment ,  handleError)
+router.get(ApiEndpoints.Department.list , passport.authenticate("admin", {session: false}) ,  DepartmentControlles.getAllDepartments ,  handleError)
 
 // count Department
-router.get(ApiEndpoints.Department.count , passport.authenticate("admin", {session: false}) ,  DepartmentControlles.getAllDepartmentCount , handleError)
+router.get(ApiEndpoints.Department.count , passport.authenticate("admin", {session: false}) ,  DepartmentControlles.getAllDepartmentsCount , handleError)
 
 // create Department
 router.post(ApiEndpoints.Department.create,passport.authenticate("admin", {session: false})  ,  DepartmentValidator, HandleValidatorError , DepartmentControlles.createDepartment , handleError)

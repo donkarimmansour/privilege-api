@@ -61,27 +61,28 @@ const StudentSchema = mongoose.Schema({
         required: true,
         enum : ["no" , "yes"] ,
     } ,
-    // className: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    //     trim: true,
-    //     ref : "course"
-    // },
+    
+    className: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref : "course"
+    },
 
-    // group: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: false,
-    //     trim: true,
-    //     ref : "group"
-    // },
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        trim: true,
+        ref : "group"
+    },
 
 
-    // level: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: false,
-    //     trim: true,
-    //     ref : "level"
-    // },
+    level: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        trim: true,
+        ref : "level"
+    },
 
     hours: {
         type: Number,
@@ -122,6 +123,18 @@ const StudentSchema = mongoose.Schema({
         required: false,
         trim: true,
     },
+
+
+    examRate: {
+        type: Number,
+        required: true,
+    } ,
+
+    teasted: {
+        type: String,
+        required: true,
+        enum : ["no" , "yes"] ,
+    } ,
    
     createdAt: {
         type: Date,

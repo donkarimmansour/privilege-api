@@ -3,6 +3,8 @@ const PaymentsRquest = require("../models/payment")
 // get All Payments
 const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
+    const newExpend = expend === "all" ? [{path: 'studentID', model: 'student'}] : expend
+
     return new Promise((resolve, reject) => {
 
         PaymentsRquest.find({}, (errFind, payments) => {
@@ -21,7 +23,7 @@ const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
 
         })
-            .populate(expend)
+            .populate(newExpend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -59,14 +61,8 @@ const getAllPaymentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 // create Payment
 const createPayment = (studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount) => {
 
-    return new Promise((resolve, reject) => { // check email
-        PaymentsRquest.findOne({}, (errFind, Payment) => {
+    return new Promise((resolve, reject) => { 
 
-            if (errFind) {
-                reject(errFind)
-            } else if (Payment) {
-                reject("the email or username already exists")
-            } else {
                 // inser a new Payment
                 PaymentsRquest.create({
                     studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount
@@ -82,11 +78,7 @@ const createPayment = (studentID, paymentStatus, paymentMethod, paymentDuration,
 
 
                 })
-            }
 
-
-
-        }).or([{ email }, { username }])
     })
 }
 
@@ -99,7 +91,7 @@ const editPayment = (id, studentID, paymentStatus, paymentMethod, paymentDuratio
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
-                        reject(errUpdate)
+                        reject(errUpdate) 
                         return
                     } 
 

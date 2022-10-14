@@ -3,10 +3,12 @@ const StudentsRquest = require("../models/student")
 // get All Students
 const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
+    
     return new Promise((resolve, reject) => {
 
-        StudentsRquest.find({}, (errFind, students) => {
+        const newExpend = expend === "all" ? [{path: 'className', model: 'course'}, {path: 'group',model: 'group'}, {path: 'level',model: 'level'}] : expend
 
+        StudentsRquest.find({}, (errFind, students) => {
 
             if (errFind) {
                 reject(errFind)
@@ -14,23 +16,27 @@ const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
                 reject("there are no students")
             } else {
 
-
+               
                 resolve(students)
 
             }
 
 
-        })
-            .populate(expend)
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+        }).populate(newExpend)
+        .select(select)
+        .sort(JSON.parse(sort))
+        .limit(parseInt(limit))
+        .skip(parseInt(skip)) 
+        .setQuery({ ...JSON.parse(filter) })
 
 
     })
 }
+
+
+
+
+
 
 // get All Students Count
 const getAllStudentsCount = (filter = '{"username" : { "$ne": "x" }}') => {

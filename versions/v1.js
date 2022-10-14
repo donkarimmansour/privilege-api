@@ -10,6 +10,10 @@ const Teacher = require("../routers/teacher")
 const Payment = require("../routers/payment")
 const Book = require("../routers/book")
 const Course = require("../routers/course")
+const Department = require("../routers/department")
+const Notification = require("../routers/notification")
+const Exam = require("../routers/exam")
+const Smtp = require("../routers/smtp")
 
 // require("../socket/socket")
 
@@ -22,6 +26,10 @@ app.use(ApiEndpoints.Professors.route, Teacher)
 app.use(ApiEndpoints.Payments.route, Payment)
 app.use(ApiEndpoints.Library.route, Book)
 app.use(ApiEndpoints.Course.route, Course)
+app.use(ApiEndpoints.Department.route, Department)
+app.use(ApiEndpoints.Notifications.route, Notification)
+app.use(ApiEndpoints.Exam.route, Exam)
+app.use(ApiEndpoints.Smtp.route, Smtp)
 
 app.use((req, res, next) => {
     res.status(404).json("Api not found") 

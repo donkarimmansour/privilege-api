@@ -1,11 +1,11 @@
-const DepartmentsRquest = require("../models/departmant")
+const DepartmentsRquest = require("../models/department")
 
 // get All Departments
 const getAllDepartments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
 
     return new Promise((resolve, reject) => {
 
-        DepartmentsRquest.find({}, (errFind, departments) => {
+        DepartmentsRquest.find({}, (errFind, departments) => { 
 
 
             if (errFind) {
@@ -56,13 +56,13 @@ const getAllDepartmentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Department
-const createDepartment = (eadOfDepartment, departmentName, brief) => {
+const createDepartment = (headOfDepartment, departmentName, brief) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Department
                 DepartmentsRquest.create({
-                    eadOfDepartment, departmentName, brief
+                    headOfDepartment, departmentName, brief
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -75,7 +75,7 @@ const createDepartment = (eadOfDepartment, departmentName, brief) => {
 }
 
 // edit Department
-const editDepartment = (id, eadOfDepartment, departmentName, brief) => {
+const editDepartment = (id, headOfDepartment, departmentName, brief) => {
     return new Promise((resolve, reject) => { // update Department
         // check id
         DepartmentsRquest.findOne({}, (errFind, Department) => {
@@ -87,7 +87,7 @@ const editDepartment = (id, eadOfDepartment, departmentName, brief) => {
             }else {
 
                 DepartmentsRquest.updateOne({}, {
-                    eadOfDepartment, departmentName, brief ,
+                    headOfDepartment, departmentName, brief ,
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {

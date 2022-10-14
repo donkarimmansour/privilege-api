@@ -1,7 +1,7 @@
 const BooksRquest = require("../models/book")
 
 // get All Books
-const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
 
     return new Promise((resolve, reject) => {
 
@@ -21,7 +21,6 @@ const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '
 
 
         })
-            .populate(expend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -66,7 +65,7 @@ const createBook = (title, status, language, level) => {
                     title, status, language, level
                 }, (errInsert, res) => {
                     if (errInsert) {
-                        reject(errInsert)
+                        reject(errInsert) 
                         return
                     }
 
