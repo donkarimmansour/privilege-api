@@ -22,11 +22,11 @@ const getSmtp = () => {
 
 
 // edit Smtp
-const editSmtp = (id, data) => {
+const editSmtp = (id, host , username , port , email , name , security , password) => {
     return new Promise((resolve, reject) => { // update Smtp
 
-                SmtpsRquest.updateOne({}, {
-                    data ,
+           SmtpRquest.updateOne({}, {
+                    host , username , port , email , name , security , password ,
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
 
-const StudentSchema = mongoose.Schema({
+const AdminSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -56,58 +56,21 @@ const StudentSchema = mongoose.Schema({
         required: true,
         enum : ["male" , "female"] ,
     },
+
+    role: { 
+        type: String,
+        required: true,
+        enum : ["admin" , "superAdmin"] ,
+    },
+
     isAccountActivated: {
         type: String,
         required: true,
         enum : ["no" , "yes"] ,
     } ,
     
-    className: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true,
-        ref : "course"
-    },
-
-    group: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        trim: true,
-        ref : "group"
-    },
 
 
-    level: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        trim: true,
-        ref : "level"
-    },
-
-    hours: {
-        type: Number,
-        required: true,
-        trim: true,
-    },
-
-    option: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-
-    session: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-
-    cin: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-  
     facebook: {
         type: String,
         required: false,
@@ -124,14 +87,6 @@ const StudentSchema = mongoose.Schema({
         trim: true,
     },
 
-
-    tested: {
-        type: String,
-        required: true,
-        enum : ["no" , "yes"] ,
-        default : "no"
-    } ,
-   
     createdAt: {
         type: Date,
         default: Date.now()
@@ -146,15 +101,15 @@ const StudentSchema = mongoose.Schema({
 
 
 // hash Password
-StudentSchema.methods.hashPassword = (password) => {
+AdminSchema.methods.hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 
 // compare Password
-StudentSchema.methods.comparePassword = function (password) {
+AdminSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password)
 }
 
-const StudentsRquest = mongoose.model("student", StudentSchema)
+const AdminsRquest = mongoose.model("admin", AdminSchema)
 
-module.exports =  StudentsRquest
+module.exports =  AdminsRquest

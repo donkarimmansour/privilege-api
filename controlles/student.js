@@ -27,9 +27,9 @@ const getAllStudentsCount = (req, res) => {
 
 // create Student
 const createStudent = (req, res) => {
-    const { firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image} = req.body;
+    const {tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image} = req.body;
 
-    StudentModel.createStudent(firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image).then(result => {
+    StudentModel.createStudent(tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createStudent = (req, res) => {
 
 // edit Students
 const editStudent = (req, res) => {
-    const { firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated} = req.body;
+    const { tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated} = req.body;
     const { id } = req.params;
 
-    StudentModel.editStudent(id, firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated).then(result => {
+    StudentModel.editStudent(id, tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

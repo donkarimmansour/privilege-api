@@ -3,6 +3,7 @@ const mailer = require("../common/mailer")
 const JWt = require("jsonwebtoken")
 const StudentRquest = require("../models/student")
 const TeachersRquest = require("../models/teacher")
+const AdminsRquest = require("../models/admin")
 
 
 // SignIn
@@ -16,6 +17,8 @@ const SignIn = (email, password , role) => {
             Rquest = StudentRquest
         }else if (role === "teacher"){
             Rquest = TeachersRquest
+        }else if (role === "admin"){
+            Rquest = AdminsRquest
         }
         
         Rquest.findOne({}, (errFind, user) => {
@@ -57,6 +60,8 @@ const forgotPassword = (email , role) => {
             Rquest = StudentRquest
         }else if (role === "teacher"){
             Rquest = TeachersRquest
+        }else if (role === "admin"){
+            Rquest = AdminsRquest
         }
 
        // check id

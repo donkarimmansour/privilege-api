@@ -1,24 +1,41 @@
 const mongoose = require("mongoose")
 
 const SmtpSchema = mongoose.Schema({
-    headOfSmtp: {
+    host: {
         type: String, 
         required: true,
         trim: true, 
     },
-
-    SmtpName: { 
+    username: { 
         type: String,
         required: true,
         trim: true,
     },
-    brief: {
-        type: String,
-        required: false,
+    port: {
+        type: Number,
+        required: true,
         trim: true,
     },
-  
-   
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    security: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+    },   
     createdAt: {
         type: Date,
         default: Date.now()

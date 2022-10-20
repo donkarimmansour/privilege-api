@@ -94,13 +94,38 @@ const TeacherValidator = [
 ]
 
 const SmtpValidator = [
- 
+   check("host").notEmpty().withMessage("host field is required"),
+   check("username").notEmpty().withMessage("username field is required"),
+   check("port").notEmpty().withMessage("port field is required"),
+   check("email").notEmpty().withMessage("email field is required"),
+   check("name").notEmpty().withMessage("name field is required"),
+   check("security").notEmpty().withMessage("security field is required"),
+   check("password").notEmpty().withMessage("password field is required"),
+]
+
+const ExamValidator = [
+   check("exam").notEmpty().withMessage("exam field is required"),
+   check("studentID").notEmpty().withMessage("studentID field is required"),
+   check("rate").notEmpty().withMessage("port field is required"),
+]
+
+const AdminValidator = [
+   check("firstname").notEmpty().withMessage("firstname field is required") , 
+   check("lastname").notEmpty().withMessage("lastname field is required") ,
+   check("email").notEmpty().withMessage("email field is required") ,
+   check("email").isEmail().withMessage("email must be email") ,
+  // check("password").notEmpty().withMessage("password field is required") ,
+   check("phone").notEmpty().withMessage("phone field is required") ,
+   check("birthday").notEmpty().withMessage("birthday field is required") ,
+   check("gender").notEmpty().withMessage("gender field is required") ,
+   check("username").notEmpty().withMessage("username field is required") ,
+   check("role").notEmpty().withMessage("role field is required") ,
+   check("isAccountActivated").notEmpty().withMessage("type field is required"),
 ]
 
 const NotificationValidator = [
  
 ]
-
 
 
 
@@ -118,5 +143,7 @@ module.exports = {
    TeacherValidator ,
    BookValidator ,
    SmtpValidator ,
-   NotificationValidator
+   NotificationValidator ,
+   ExamValidator ,
+   AdminValidator
 }

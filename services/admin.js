@@ -1,28 +1,26 @@
-const StudentsRquest = require("../models/student")
+const AdminsRquest = require("../models/admin")
 
-// get All Students
-const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+// get All Admins
+const getAllAdmins = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
     
     return new Promise((resolve, reject) => {
 
-        const newExpend = expend === "all" ? [{path: 'className', model: 'course'}, {path: 'group',model: 'group'}, {path: 'level',model: 'level'}] : expend
-
-        StudentsRquest.find({}, (errFind, students) => {
+        AdminsRquest.find({}, (errFind, Admins) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (students.length <= 0) {
-                reject("there are no students")
+            } else if (Admins.length <= 0) {
+                reject("there are no Admins")
             } else {
 
                
-                resolve(students)
+                resolve(Admins)
 
             }
 
 
-        }).populate(newExpend)
+        }).populate(expend)
         .select(select)
         .sort(JSON.parse(sort))
         .limit(parseInt(limit))
@@ -38,21 +36,21 @@ const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
 
 
-// get All Students Count
-const getAllStudentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
+// get All Admins Count
+const getAllAdminsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 
     return new Promise((resolve, reject) => {
 
-        StudentsRquest.find({}, (errFind, students) => {
+        AdminsRquest.find({}, (errFind, Admins) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (students.length <= 0) {
-                reject("there are no students")
+            } else if (Admins.length <= 0) {
+                reject("there are no Admins")
             } else {
 
 
-                resolve(students)
+                resolve(Admins)
 
             }
 
@@ -62,21 +60,21 @@ const getAllStudentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
     })
 }
 
-// create Student
-const createStudent = (tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated, image) => {
+// create Admin
+const createAdmin = (firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image) => {
 
     return new Promise((resolve, reject) => { // check email
-        StudentsRquest.findOne({}, (errFind, student) => {
+        AdminsRquest.findOne({}, (errFind, Admin) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (student) {
+            } else if (Admin) {
                 reject("the email or username already exists")
             } else {
-                // inser a new student
-                StudentsRquest.create({
-                    tested , firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, group, level, hours, option, session, cin,
-                    password: new StudentsRquest().hashPassword(password), image , isAccountActivated
+                // inser a new Admin
+                AdminsRquest.create({
+                    firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , 
+                    password: new AdminsRquest().hashPassword(password), image , isAccountActivated
 
                 }, (errInsert, res) => {
                     if (errInsert) {
@@ -97,19 +95,19 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
     })
 }
 
-// edit Student
-const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated) => {
-    return new Promise((resolve, reject) => { // update student
+// edit Admin
+const editAdmin = (id,firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated) => {
+    return new Promise((resolve, reject) => { // update Admin
         // check id
-        StudentsRquest.findOne({}, (errFind, student) => {
+        AdminsRquest.findOne({}, (errFind, Admin) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!student) {
+            } else if (!Admin) {
                 reject("id not exist")
             } 
             
-            // else if (student.username === username || student.email === email) {
+            // else if (Admin.username === username || Admin.email === email) {
             //     reject("the email or username already exists")
             // } 
             
@@ -119,12 +117,11 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
 
 
                 //update
-                const newpassword = (password == "") ? student.password : student.hashPassword(password)
+                const newpassword = (password == "") ? Admin.password : Admin.hashPassword(password)
 
-
-                StudentsRquest.updateOne({}, {
-                    password: newpassword,tested ,
-                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, group, level, hours, option, session, cin,
+                AdminsRquest.updateOne({}, {
+                    password: newpassword ,
+                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin , role , 
                     updatedAt: Date.now() , isAccountActivated
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
@@ -153,20 +150,20 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
 }
 
 
-// edit Student Profile
-const editStudentProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin) => {
-    return new Promise((resolve, reject) => { // update student
+// edit Admin Profile
+const editAdminProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin) => {
+    return new Promise((resolve, reject) => { // update Admin
         // check id
-        StudentsRquest.findOne({}, (errFind, student) => {
+        AdminsRquest.findOne({}, (errFind, Admin) => {
 
 
             if (errFind) {
                 reject(errFind)
-            } else if (!student) {
+            } else if (!Admin) {
                 reject("id not exist")
             } 
             
-            // else if (student.email === email) {
+            // else if (Admin.email === email) {
             //     reject("the email already exists")
             // }
             
@@ -174,9 +171,9 @@ const editStudentProfile = (id, firstname, lastname, phone, email, password, fac
 
 
                 //update
-                const newpassword = (password == "") ? student.password : student.hashPassword(password)
+                const newpassword = (password == "") ? Admin.password : Admin.hashPassword(password)
 
-                StudentsRquest.updateOne({}, {
+                AdminsRquest.updateOne({}, {
                     password: newpassword,
                     firstname, lastname, phone, email, facebook, twitter, linkedin,
                     updatedAt: Date.now()
@@ -207,19 +204,19 @@ const editStudentProfile = (id, firstname, lastname, phone, email, password, fac
 }
 
 
-// edit Student Image
-const editStudentImage = (id, image) => {
+// edit Admin Image
+const editAdminImage = (id, image) => {
     return new Promise((resolve, reject) => { // update user
         // check id
-        StudentsRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, student) => {
+        AdminsRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, Admin) => {
             if (errFind) {
                 reject(errFind)
-            } else if (!student) {
+            } else if (!Admin) {
                 reject("id not exist")
             } else {
 
                 //update
-                resolve(student.image)
+                resolve(Admin.image)
 
             }
 
@@ -231,22 +228,22 @@ const editStudentImage = (id, image) => {
 }
 
 
-// delete Student
-const deleteStudent = (id) => {
+// delete Admin
+const deleteAdmin = (id) => {
 
     return new Promise((resolve, reject) => {
 
         // check id
-        StudentsRquest.findOne({}, (errFind, student) => {
+        AdminsRquest.findOne({}, (errFind, Admin) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!student) {
+            } else if (!Admin) {
                 reject("id not exist")
             } else {
 
                 //delete
-                StudentsRquest.deleteOne({}
+                AdminsRquest.deleteOne({}
                     , (errUpdate, doc) => {
                         if (errUpdate) {
                             reject(errUpdate)
@@ -268,4 +265,4 @@ const deleteStudent = (id) => {
 }
 
 
-module.exports = { getAllStudents, getAllStudentsCount, createStudent, editStudent, editStudentProfile, editStudentImage, deleteStudent  }
+module.exports = { getAllAdmins, getAllAdminsCount, createAdmin, editAdmin, editAdminProfile, editAdminImage, deleteAdmin  }

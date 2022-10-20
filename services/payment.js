@@ -3,7 +3,7 @@ const PaymentsRquest = require("../models/payment")
 // get All Payments
 const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
-    const newExpend = expend === "all" ? [{path: 'studentID', model: 'student'}] : expend
+    const newExpend = expend === "all" ? [{ path: 'studentID', model: 'student' , populate : {path : 'className', model: 'course'}}] : expend
 
     return new Promise((resolve, reject) => {
 

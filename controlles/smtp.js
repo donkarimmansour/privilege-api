@@ -14,10 +14,10 @@ const getSmtp = (req, res) => {
 
 // edit Smtps
 const editSmtp = (req, res) => {
-    const { data } = req.body;
+    const {  host , username , port , email , name , security , password} = req.body;
     const { id } = req.params;
 
-    SmtpModel.editSmtp(id , data).then(result => {
+    SmtpModel.editSmtp(id , host , username , port , email , name , security , password).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
