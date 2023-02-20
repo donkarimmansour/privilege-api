@@ -67,6 +67,7 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
 
     return new Promise((resolve, reject) => { // check email
         StudentsRquest.findOne({}, (errFind, student) => {
+            //group , level
 
             if (errFind) {
                 reject(errFind)
@@ -75,7 +76,7 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
             } else {
                 // inser a new student
                 StudentsRquest.create({
-                    tested , firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, group, level, hours, option, session, cin,
+                    tested , firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, hours, option, session, cin,
                     password: new StudentsRquest().hashPassword(password), image , isAccountActivated
 
                 }, (errInsert, res) => {

@@ -24,7 +24,6 @@ const SignIn = (email, password , role) => {
         Rquest.findOne({}, (errFind, user) => {
             if (errFind){ 
                 reject(errFind)
-                 return 
             } else if (!user || !user.comparePassword(password)) {    
                 reject("email or username or password is incorrect")
            
