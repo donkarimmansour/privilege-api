@@ -4,9 +4,9 @@ const codes = require("../common/codes")
  
 // get All Groups
 const getAllGroups = (req, res) => {
-    const { sort, limit, skip, filter, select, expend } = req.query;
+    const { sort, limit, skip, filter } = req.query;
 
-    GroupModel.getAllGroups(sort, limit, skip, filter, select, expend).then(result => {
+    GroupModel.getAllGroups(sort, limit, skip, filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -27,9 +27,9 @@ const getAllGroupsCount = (req, res) => {
 
 // create Group
 const createGroup = (req, res) => {
-    const {name, className} = req.body;
+    const {name, level, department, position} = req.body;
 
-    GroupModel.createGroup(name, className).then(result => {
+    GroupModel.createGroup(name, level, department, position).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createGroup = (req, res) => {
 
 // edit Groups
 const editGroup = (req, res) => {
-    const { name, className} = req.body;
+    const { name, level, department, position} = req.body;
     const { id } = req.params;
 
-    GroupModel.editGroup(id , name, className).then(result => {
+    GroupModel.editGroup(id , name, level, department, position).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

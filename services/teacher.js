@@ -5,7 +5,6 @@ const getAllTeachers = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
     return new Promise((resolve, reject) => {
 
-
         const newExpend = expend === "all" ? [{path: 'teach', model: 'course'}] : expend
 
         TeachersRquest.find({}, (errFind, teachers) => {

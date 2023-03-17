@@ -39,13 +39,13 @@ const getAllExams = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '
 
 
 // create Exam
-const createExam = (exam, rate, studentID) => {
+const createExam = (exam, rate, successed, quizzes, studentID) => {
 
     return new Promise((resolve, reject) => {
 
         // inser a new Group
         ExamsRquest.create({
-            exam, rate, studentID
+            exam, rate, successed, quizzes, studentID
         }, (errInsert, res) => {
             if (errInsert) {
                 reject(errInsert)

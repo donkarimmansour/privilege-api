@@ -1,35 +1,41 @@
 const CoursesRquest = require("../models/course")
 
 // get All Courses
-const getAllCourses = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
+const getAllCourses = (sort, limit, skip, filter) => {
 
-    return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => { 
 
-        CoursesRquest.find({}, (errFind, courses) => {
-
-
-            if (errFind) {
-                reject(errFind)
-            } else if (courses.length <= 0) {
-                reject("there are no Courses")
-            } else {
-
-
+            CoursesRquest.aggregate([
+                { $lookup: { from: `students`, localField: `_id`, foreignField: "className", as: `studentsCount` } },
+                { $lookup: { from: `teachers`, localField: `_id`, foreignField: "teach", as: `teachersCount` } },
+                { $addFields: { studentsCount: { $size: "$studentsCount" } } },
+                { $addFields: { teachersCount: { $size: "$teachersCount" } } },
+                {
+                    $project: {
+                        studentsCount: 1, teachersCount: 1, name: 1, description: 1, image: 1, createdAt: 1, updatedAt: 1,
+                        _id: { $toString: "$_id" }
+                    }
+                },
+                { $match: filter ? JSON.parse(filter) : {} },
+                { $skip: skip ? parseInt(skip) : 0 },
+                { $limit: limit ? parseInt(limit) : 1000 },
+                { $sort: sort ? JSON.parse(sort) : { "_id": 1 } },
+            ]).exec().then(courses => {
+    
+                if (courses.length <= 0) {
+                    reject("there are no Courses")
+                    return
+                }
+    
                 resolve(courses)
-
-            }
-
-
-        })
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+    
+            }).catch(err => { reject(err) })
+    
 
 
     })
 }
+
 
 // get All Courses Count
 const getAllCoursesCount = (filter = '{"username" : { "$ne": "x" }}') => {
@@ -179,4 +185,4 @@ const deleteCourse = (id) => {
 }
  
  
-module.exports = { getAllCourses, getAllCoursesCount, createCourse, editCourse, editCourseImage, deleteCourse  }
+module.exports = { getAllCourses, getAllCoursesCount, createCourse, editCourse, editCourseImage, deleteCourse }

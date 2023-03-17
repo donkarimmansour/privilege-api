@@ -15,10 +15,9 @@ const CourseSchema = mongoose.Schema({
     },
     image: {
         type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        trim: true,
+        required: true,
         ref : "file",
-        default : "6345c36928d91b2909c053e7"
+        default : "64138ac71da720d3bad08485"
     },
     createdAt: {
         type: Date,

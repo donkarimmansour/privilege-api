@@ -1,36 +1,38 @@
 const LevelsRquest = require("../models/level")
 
 // get All Levels
-const getAllLevels = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+const getAllLevels = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
 
-        const newExpend = expend === "all" ? [{path: 'department', model: 'department'}, {path: 'group',model: 'group' ,  populate: {path : "className" , model : "course"}}] : expend
+        console.log(filter);
 
+        LevelsRquest.aggregate([
+            { $lookup: { from: `students`, localField: `_id`, foreignField: "level", as: `studentsCount` } },
+            { $addFields: { studentsCount: { $size: "$studentsCount" } } },
+            { $lookup: { from: `courses`, localField: `className`, foreignField: "_id", as: `classNames` } },
+            {
+                $project: {
+                    studentsCount: 1, name: 1, createdAt: 1, updatedAt: 1,
+                    className: { $toString: "$className" }, classNames: { $first: "$classNames" }, _id: { $toString: "$_id" }
+                }
+            },
+            { $match: filter ? JSON.parse(filter) : {} },
+            { $skip: skip ? parseInt(skip) : 0 },
+            { $limit: limit ? parseInt(limit) : 1000 },
+            { $sort: sort ? JSON.parse(sort) : { "_id": 1 } }
+        ]).exec().then(levels => {
 
-        LevelsRquest.find({}, (errFind, levels) => {
-
-
-            if (errFind) {
-                reject(errFind)
-            } else if (levels.length <= 0) {
-                reject("there are no Levels") 
-            } else {
-
-
-                resolve(levels)
-
+            if (levels.length <= 0) {
+                reject("there are no Levels")
+                return
             }
 
+            resolve(levels) 
 
-        })
-            .populate(newExpend)
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+        }).catch(err => { reject(err) })
 
+       
 
     })
 }
@@ -60,13 +62,13 @@ const getAllLevelsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Level
-const createLevel = (name, group, department, position) => {
+const createLevel = (name, className) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Level
                 LevelsRquest.create({
-                    name, group, department, position
+                    name, className
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -82,7 +84,7 @@ const createLevel = (name, group, department, position) => {
 }
 
 // edit Level
-const editLevel = (id, name, group, department, position) => {
+const editLevel = (id, name, className) => {
     return new Promise((resolve, reject) => { // update Level
         // check id
         LevelsRquest.findOne({}, (errFind, Level) => {
@@ -94,7 +96,7 @@ const editLevel = (id, name, group, department, position) => {
             }else {
 
                 LevelsRquest.updateOne({}, {
-                    name, group, department, position , updatedAt: Date.now() 
+                    name, className , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

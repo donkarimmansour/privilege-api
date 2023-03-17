@@ -4,7 +4,7 @@ const router = require("express").Router()
 const { TeacherValidator , ImageValidator , StudentProfileValidator  } = require("../middlewares/validators")
 
 // getall Teachers
-router.get(ApiEndpoints.Professors.list , passport.authenticate("admin", {session: false}) ,  TeacherControlles.getAllTeachers ,  handleError)
+router.get(ApiEndpoints.Professors.list , passport.authenticate("teacherOradmin", {session: false}) ,  TeacherControlles.getAllTeachers ,  handleError)
 
 // count Teachers
 router.get(ApiEndpoints.Professors.count , passport.authenticate("admin", {session: false}) ,  TeacherControlles.getAllTeachersCount , handleError)

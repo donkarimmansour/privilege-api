@@ -7,7 +7,7 @@ const newRole = (name , role , msg , testMod = false) => {
         jwtFromRequest: passportExtractJwt.fromAuthHeaderAsBearerToken(), 
         secretOrKey: process.env.KEY 
     }, (Jwt_payload, done) => {
-
+        
         if (role.includes(Jwt_payload.role) || testMod) {
             return done(null, Jwt_payload.user || Jwt_payload.admin)
         } else {
@@ -18,7 +18,9 @@ const newRole = (name , role , msg , testMod = false) => {
 }
 
 
-newRole("admin" , ["user" , "admin"] , "admin permission denied" , true)
-newRole("student" , ["student" , "student permission denied" ] , true)
-newRole("studentOradmin" , ["student" , "admin"] , "student Or admin permission denied" , true)
+newRole("student" , ["student" , "student permission denied" ] , "student Or admin permission denied" , true)
+newRole("teacher" , ["teacher" , "teacher permission denied" ] , "teacher permission denied" , true)
+newRole("admin" , ["admin" , "admin permission denied" ] , "admin permission denied" , true)
+newRole("teacherOradmin" , ["teacher" , "admin"] , "teacher Or admin permission denied" , true)
+newRole("all" , ["teacher", "student" , "admin"] , "teacher or student Or admin permission denied" , true)
 

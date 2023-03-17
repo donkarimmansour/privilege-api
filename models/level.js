@@ -5,23 +5,12 @@ const LevelSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-    },
-    group: {
+    }, 
+    className: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref : "group"
-    }, 
-    department: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true,
-        ref : "department"
-    }, 
-    position: { 
-        type: Number,
-        required: true,
-        trim: true,
+        ref : "course"
     },
 
     createdAt: {

@@ -4,10 +4,10 @@ const router = require("express").Router()
 const { StudentValidator , ImageValidator , StudentProfileValidator  } = require("../middlewares/validators")
 
 // getall students
-router.get(ApiEndpoints.Students.list , passport.authenticate("admin", {session: false}) ,  StudentControlles.getAllStudents ,  handleError)
+router.get(ApiEndpoints.Students.list , passport.authenticate("all", {session: false}) ,  StudentControlles.getAllStudents ,  handleError)
 
 // count students
-router.get(ApiEndpoints.Students.count , passport.authenticate("admin", {session: false}) ,  StudentControlles.getAllStudentsCount , handleError)
+router.get(ApiEndpoints.Students.count , passport.authenticate("all", {session: false}) ,  StudentControlles.getAllStudentsCount , handleError)
 
 // create student
 router.post(ApiEndpoints.Students.create,passport.authenticate("admin", {session: false})  ,  StudentValidator, HandleValidatorError , StudentControlles.createStudent , handleError)

@@ -13,7 +13,7 @@ router.get(ApiEndpoints.File.getSingleFileDownload  , passport.authenticate("adm
     idValidator , fileControlles.getSingleFileDownload , handleError)
        
 // create Single File  
-router.post(ApiEndpoints.File.createSingleFile ,  passport.authenticate("admin", {session: false}) , singleFile("./public/images" , "image") , fileControlles.createSingleFile , handleError)
+router.post(ApiEndpoints.File.createSingleFile ,  passport.authenticate("all", {session: false}) , singleFile("./public/images" , "image") , fileControlles.createSingleFile , handleError)
   
 
 

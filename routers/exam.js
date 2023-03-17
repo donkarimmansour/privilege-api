@@ -4,9 +4,9 @@ const { ExamValidator } = require("../middlewares/validators")
 const router = require("express").Router()
 
 // getall Exams
-router.get(ApiEndpoints.Exam.list , passport.authenticate("admin", {session: false}) ,  ExamControlles.getAllExams ,  handleError)
+router.get(ApiEndpoints.Exam.list , passport.authenticate("all", {session: false}) ,  ExamControlles.getAllExams ,  handleError)
 
 // create Exam
-router.post(ApiEndpoints.Exam.create,passport.authenticate("admin", {session: false})  ,  ExamValidator, HandleValidatorError , ExamControlles.createExam , handleError)
+router.post(ApiEndpoints.Exam.create,passport.authenticate("student", {session: false})  ,  ExamValidator, HandleValidatorError , ExamControlles.createExam , handleError)
 
 module.exports = router

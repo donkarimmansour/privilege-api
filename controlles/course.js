@@ -4,14 +4,15 @@ const codes = require("../common/codes")
  
 // get All Courses
 const getAllCourses = (req, res) => {
-    const { sort, limit, skip, filter, select } = req.query;
+    const { sort, limit, skip, filter } = req.query;
 
-    CourseModel.getAllCourses(sort, limit, skip, filter, select).then(result => {
+    CourseModel.getAllCourses(sort, limit, skip, filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
+
 
 // get All Courses Count
 const getAllCoursesCount = (req, res) => {

@@ -7,11 +7,22 @@ const GroupSchema = mongoose.Schema({
         trim: true,
     },
 
-    className: {
+    level: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref : "course"
+        ref : "level"
+    }, 
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref : "department"
+    }, 
+    position: { 
+        type: Number,
+        required: true,
+        trim: true,
     },
 
     createdAt: {

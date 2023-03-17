@@ -20,6 +20,17 @@ const ExamSchema = mongoose.Schema({
         required: true,
     } ,
 
+    quizzes: {
+        type: Number,
+        required: true,
+    } ,
+
+    successed: {
+        type: Number,
+        required: true,
+    } ,
+
+
     createdAt: {
         type: Date,
         default: Date.now()

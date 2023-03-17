@@ -4,9 +4,9 @@ const codes = require("../common/codes")
 
 // get All Levels
 const getAllLevels = (req, res) => {
-    const { sort, limit, skip, filter, select, expend } = req.query;
+    const { sort, limit, skip, filter } = req.query;
 
-    LevelModel.getAllLevels(sort, limit, skip, filter, select, expend).then(result => {
+    LevelModel.getAllLevels(sort, limit, skip, filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -27,9 +27,9 @@ const getAllLevelsCount = (req, res) => {
 
 // create Level
 const createLevel = (req, res) => {
-    const { name, group, department, position} = req.body;
+    const { name, className} = req.body;
 
-    LevelModel.createLevel(name, group, department, position).then(result => {
+    LevelModel.createLevel(name, className).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createLevel = (req, res) => {
 
 // edit Levels
 const editLevel = (req, res) => {
-    const { name, group, department, position} = req.body;
+    const { name, className} = req.body;
     const { id } = req.params;
 
-    LevelModel.editLevel(id, name, group, department, position).then(result => {
+    LevelModel.editLevel(id, name, className).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

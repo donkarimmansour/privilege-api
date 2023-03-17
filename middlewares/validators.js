@@ -53,14 +53,14 @@ const CourseValidator = [
 
 const GroupValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
-   check("className").notEmpty().withMessage("class field is required") ,
+   check("level").notEmpty().withMessage("level field is required") ,
+   check("department").notEmpty().withMessage("department field is required") , 
+   check("position").notEmpty().withMessage("position field is required") 
 ]
 
 const LevelValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
-   check("group").notEmpty().withMessage("group field is required") ,
-   check("department").notEmpty().withMessage("department field is required") , 
-   check("position").notEmpty().withMessage("position field is required") 
+   check("className").notEmpty().withMessage("class field is required") ,
 ]
 
 const PaymentValidator = [
@@ -106,7 +106,9 @@ const SmtpValidator = [
 const ExamValidator = [
    check("exam").notEmpty().withMessage("exam field is required"),
    check("studentID").notEmpty().withMessage("studentID field is required"),
-   check("rate").notEmpty().withMessage("port field is required"),
+   check("rate").notEmpty().withMessage("rate field is required"),
+   check("quizzes").notEmpty().withMessage("quizzes field is required"),
+   check("successed").notEmpty().withMessage("successed field is required"),
 ]
 
 const AdminValidator = [

@@ -15,9 +15,9 @@ const getAllExams = (req, res) => {
 
 // create Exam 
 const createExam = (req, res) => {
-    const {exam, rate , studentID} = req.body;
+    const {exam, rate, successed, quizzes, studentID} = req.body;
 
-    ExamModel.createExam(exam, rate , studentID).then(result => {
+    ExamModel.createExam(exam, rate, successed, quizzes, studentID).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

@@ -1,34 +1,43 @@
 const GroupsRquest = require("../models/group")
 
 // get All Groups
-const getAllGroups = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
-
-    const newExpend = expend === "all" ? [{path: 'className', model: 'course'}] : expend
+const getAllGroups = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
 
-        GroupsRquest.find({}, (errFind, groups) => {
+        GroupsRquest.aggregate([
+            { $lookup: { from: `students`, localField: `_id`, foreignField: "group", as: `studentsCount` } },
+            { $addFields: { studentsCount: { $size: "$studentsCount" } } },
+            { $lookup: { from: `levels`, localField: `level`, foreignField: "_id", as: `levels` } },
+            {
+                $project: {
+                    studentsCount: 1, name: 1, department: 1, position: 1, createdAt: 1, updatedAt: 1,
+                    level: { $toString: "$level" }, levels: { $first: "$levels" }
+                }
+            },
+            { $lookup: { from: `courses`, localField: "levels.className", foreignField: "_id", as: `className` } },
+            { $lookup: { from: `departments`, localField: `department`, foreignField: "_id", as: `department` } },
+            {
+                $project: {
+                    studentsCount: 1, name: 1, department: 1, position: 1, createdAt: 1, updatedAt: 1,
+                    level: 1, levels: 1, className: { $first: "$className" }, department: { $first: "$department" }, _id: { $toString: "$_id" }
+                }
+            },
+            { $match: filter ? JSON.parse(filter) : {} },
+            { $skip: skip ? parseInt(skip) : 0 },
+            { $limit: limit ? parseInt(limit) : 1000 },
+            { $sort: sort ? JSON.parse(sort) : { "_id": 1 } }
+        ]).exec().then(groups => {
 
-
-            if (errFind) {
-                reject(errFind)
-            } else if (groups.length <= 0) {
+            if (groups.length <= 0) {
                 reject("there are no Groups")
-            } else {
+                return
+            }
 
+            resolve(groups)
 
-                resolve(groups)
-
-            } 
-
-
-        })
-            .populate(newExpend)
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+        
+        }).catch(err => { reject(err) })
 
 
     })
@@ -59,13 +68,13 @@ const getAllGroupsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Group
-const createGroup = (name, className) => {
+const createGroup = (name, level, department, position) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Group
                 GroupsRquest.create({
-                    name, className
+                    name, level, department, position
 
                 }, (errInsert, res) => {
                     if (errInsert) {
@@ -82,12 +91,12 @@ const createGroup = (name, className) => {
 }
 
 // edit Group
-const editGroup = (id, name, className) => {
+const editGroup = (id, name, level, department, position) => {
     return new Promise((resolve, reject) => { // update Group
 
  
                 GroupsRquest.updateOne({}, {
-                    name, className , updatedAt: Date.now() 
+                    name, level, department, position , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)
