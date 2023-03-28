@@ -1,9 +1,11 @@
 const BooksRquest = require("../models/book")
 
 // get All Books
-const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
+const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
     return new Promise((resolve, reject) => {
+
+        const newExpend = expend === "all" ? [{path: 'language', model: 'language'}, {path: 'level',model: 'level'}] : expend
 
         BooksRquest.find({}, (errFind, books) => {
 
@@ -20,7 +22,7 @@ const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '
             }
 
 
-        })
+        }).populate(newExpend)
             .select(select)
             .sort(JSON.parse(sort))
             .limit(parseInt(limit))
@@ -56,13 +58,13 @@ const getAllBooksCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Book
-const createBook = (title, status, language, level) => {
+const createBook = (title, quantity, language, level, actions) => {
 
     return new Promise((resolve, reject) => { // check email 
 
                 // inser a new Book
                 BooksRquest.create({
-                    title, status, language, level
+                    title, quantity, language, level, actions: [actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert) 
@@ -79,7 +81,7 @@ const createBook = (title, status, language, level) => {
 }
 
 // edit Book
-const editBook = (id, title, status, language, level) => {
+const editBook = (id, title, quantity, language, level, actions) => {
     return new Promise((resolve, reject) => { // update Book
         // check id
         BooksRquest.findOne({}, (errFind, Book) => {
@@ -92,7 +94,7 @@ const editBook = (id, title, status, language, level) => {
 
 
                 BooksRquest.updateOne({}, {
-                    title, status, language, level , updatedAt: Date.now()
+                    title, quantity, language, level, $push: {actions} , updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

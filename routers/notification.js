@@ -6,12 +6,14 @@ const { NotificationValidator  } = require("../middlewares/validators")
 // getall Notification
 router.get(ApiEndpoints.Notifications.list , passport.authenticate("admin", {session: false}) ,  NotificationControlles.getAllNotifications ,  handleError)
  
+// count Notifications
+router.get(ApiEndpoints.Notifications.count , passport.authenticate("admin", {session: false}) ,  NotificationControlles.getAllNotificationsCount , handleError)
+
 // create Notification 
 router.post(ApiEndpoints.Notifications.create,passport.authenticate("admin", {session: false})  ,  NotificationValidator, HandleValidatorError , NotificationControlles.createNotification , handleError)
 
-// edit Notification
-router.put(ApiEndpoints.Notifications.edit , passport.authenticate("admin", {session: false}) , NotificationValidator , idValidator, HandleValidatorError , NotificationControlles.editNotification , handleError)
-
+// seen Notification
+router.put(ApiEndpoints.Notifications.seen , passport.authenticate("admin", {session: false}), idValidator , NotificationControlles.seenNotification , handleError)
 
 // delete Notification
 router.delete(ApiEndpoints.Notifications.delete , passport.authenticate("admin", {session: false}), idValidator , NotificationControlles.deleteNotification , handleError)

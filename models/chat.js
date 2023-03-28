@@ -12,11 +12,6 @@ const chatSchema = mongoose.Schema ({
         required : true ,
         default: null
     },
-    productId : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref : "product" ,
-        required : true ,
-    },
     image : {
         type: mongoose.Schema.Types.ObjectId,
         ref : "file" ,

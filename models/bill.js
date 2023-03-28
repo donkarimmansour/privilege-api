@@ -1,18 +1,19 @@
 const mongoose = require("mongoose")
 
-const LevelSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-    }, 
-
-    language: {
+const BillSchema = mongoose.Schema({
+   
+    studentID: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref : "language"
+        ref : "student",
     },
 
+    amount: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+   
     actions: [{
         type: {
             fullName: { type: String, required: true },
@@ -31,11 +32,8 @@ const LevelSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-
-   
 })
 
+const BillsRquest = mongoose.model("bill", BillSchema)
 
-const LevelsRquest = mongoose.model("level", LevelSchema)
-
-module.exports =  LevelsRquest
+module.exports =  BillsRquest

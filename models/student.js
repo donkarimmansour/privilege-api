@@ -61,17 +61,15 @@ const StudentSchema = mongoose.Schema({
         enum : ["no" , "yes"] ,
     } ,
     
-    className: {
+    language: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
-        ref : "course"
+        ref : "language"
     },
 
     group: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        trim: true,
         ref : "group"
     },
 
@@ -79,14 +77,12 @@ const StudentSchema = mongoose.Schema({
     level: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        trim: true,
         ref : "level"
     },
 
     hours: {
         type: Number,
         required: true,
-        trim: true,
     },
 
     option: {
@@ -127,9 +123,19 @@ const StudentSchema = mongoose.Schema({
     tested: {
         type: String,
         required: true,
-        enum : ["no" , "yes"] ,
-        default : "no"
+        enum : ["no" , "yes"] 
     } ,
+
+    actions: [{
+        type: {
+            fullName: { type: String, required: true },
+            role: { type: String, required: true },
+            action: { type: String, required: true },
+            date: { type: Date, required: true, default: Date.now() },
+        },
+        required: true,
+    }],
+
    
     createdAt: {
         type: Date,

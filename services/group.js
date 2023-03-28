@@ -9,18 +9,15 @@ const getAllGroups = (sort, limit, skip, filter) => {
             { $lookup: { from: `students`, localField: `_id`, foreignField: "group", as: `studentsCount` } },
             { $addFields: { studentsCount: { $size: "$studentsCount" } } },
             { $lookup: { from: `levels`, localField: `level`, foreignField: "_id", as: `levels` } },
+            { $lookup: { from: `languages`, localField: "language", foreignField: "_id", as: `languages` } },
+            { $lookup: { from: `departments`, localField: `department`, foreignField: "_id", as: `departments` } },
+            { $lookup: { from: `teachers`, localField: `teacher`, foreignField: "_id", as: `teachers` } },
             {
                 $project: {
-                    studentsCount: 1, name: 1, department: 1, position: 1, createdAt: 1, updatedAt: 1,
-                    level: { $toString: "$level" }, levels: { $first: "$levels" }
-                }
-            },
-            { $lookup: { from: `courses`, localField: "levels.className", foreignField: "_id", as: `className` } },
-            { $lookup: { from: `departments`, localField: `department`, foreignField: "_id", as: `department` } },
-            {
-                $project: {
-                    studentsCount: 1, name: 1, department: 1, position: 1, createdAt: 1, updatedAt: 1,
-                    level: 1, levels: 1, className: { $first: "$className" }, department: { $first: "$department" }, _id: { $toString: "$_id" }
+                    studentsCount: 1, name: 1, createdAt: 1, updatedAt: 1, actions: 1,option: 1, session: 1, calindar: 1,
+                    levels: { $first: "$levels" }, languages: { $first: "$levels" }, departments: { $first: "$departments" }, teachers: { $first: "$teachers" },
+                    level: { $toString: "$level" }, language: { $toString: "$language" }, department: { $toString: "$department" },
+                    teacher: { $toString: "$teacher" }, _id: { $toString: "$_id" }
                 }
             },
             { $match: filter ? JSON.parse(filter) : {} },
@@ -68,14 +65,13 @@ const getAllGroupsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Group
-const createGroup = (name, level, department, position) => {
+const createGroup = (name, level, department, language, teacher, session,calindar,option,actions) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Group
                 GroupsRquest.create({
-                    name, level, department, position
-
+                    name, level, department, language, teacher, session,calindar,option,actions: [actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -91,12 +87,12 @@ const createGroup = (name, level, department, position) => {
 }
 
 // edit Group
-const editGroup = (id, name, level, department, position) => {
+const editGroup = (id, name, level, department, language, teacher, session,calindar,option,actions) => {
     return new Promise((resolve, reject) => { // update Group
 
  
                 GroupsRquest.updateOne({}, {
-                    name, level, department, position , updatedAt: Date.now() 
+                    name, level, department, language, teacher, session,calindar,option, $push: {actions} , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

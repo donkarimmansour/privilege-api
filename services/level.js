@@ -5,16 +5,14 @@ const getAllLevels = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
 
-        console.log(filter);
-
         LevelsRquest.aggregate([
             { $lookup: { from: `students`, localField: `_id`, foreignField: "level", as: `studentsCount` } },
             { $addFields: { studentsCount: { $size: "$studentsCount" } } },
-            { $lookup: { from: `courses`, localField: `className`, foreignField: "_id", as: `classNames` } },
+            { $lookup: { from: `languages`, localField: `language`, foreignField: "_id", as: `languages` } },
             {
                 $project: {
-                    studentsCount: 1, name: 1, createdAt: 1, updatedAt: 1,
-                    className: { $toString: "$className" }, classNames: { $first: "$classNames" }, _id: { $toString: "$_id" }
+                    studentsCount: 1, name: 1, createdAt: 1, updatedAt: 1, actions: 1,
+                    language: { $toString: "$language" }, languages: { $first: "$languages" }, _id: { $toString: "$_id" }
                 }
             },
             { $match: filter ? JSON.parse(filter) : {} },
@@ -62,29 +60,34 @@ const getAllLevelsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Level
-const createLevel = (name, className) => {
+const createLevel = (name, languages, actions) => {
 
     return new Promise((resolve, reject) => { // check email
 
+                 const newLanguages = languages.map(l => ({
+                    name: name,
+                    language: l.id,
+                    LName: l.name,
+                    actions: [actions]
+                 }))
+
+
                 // inser a new Level
-                LevelsRquest.create({
-                    name, className
-                }, (errInsert, res) => {
+                LevelsRquest.create(newLanguages , (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
-                        return
+                        
+                    }else{
+                      resolve(newLanguages.map((l, i) => res.find(r => l.language == r.language ) ? ({id: res[i]._id, name: l.LName}) : null).filter(l => !!l))
+
                     }
-
-
-                    resolve(res._id)
-
 
                 })
     })
 }
 
 // edit Level
-const editLevel = (id, name, className) => {
+const editLevel = (id, name, languages, actions) => {
     return new Promise((resolve, reject) => { // update Level
         // check id
         LevelsRquest.findOne({}, (errFind, Level) => {
@@ -96,14 +99,12 @@ const editLevel = (id, name, className) => {
             }else {
 
                 LevelsRquest.updateOne({}, {
-                    name, className , updatedAt: Date.now() 
+                    name, language: languages , $push: {actions},  updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
+                    
                     if (errUpdate) {
                         reject(errUpdate)
-                        return
-                    }
-
-                    if (doc.modifiedCount > 0) {
+                    }else if (doc.modifiedCount > 0) {
                         resolve("modified")
 
 

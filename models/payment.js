@@ -5,15 +5,14 @@ const PaymentSchema = mongoose.Schema({
     studentID: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
         ref : "student",
     },
 
-    paymentStatus: {
-        type: String,
-        required: true,
-        trim: true,
-    },
+    // paymentStatus: {
+    //     type: String, 
+    //     required: true,
+    //     trim: true,
+    // },
 
     paymentMethod: {
         type: String,
@@ -21,11 +20,11 @@ const PaymentSchema = mongoose.Schema({
         trim: true,
     },
 
-    paymentDuration: {
-        type: String,
-        required: true,
-        trim: true,
-    },
+    // paymentDuration: {
+    //     type: String,
+    //     required: true,
+    //     trim: true,
+    // },
 
     paymentReference: {
         type: String,
@@ -45,11 +44,11 @@ const PaymentSchema = mongoose.Schema({
         trim: true,
     },
 
-    pending: {
-        type: Number,
-        required: true,
-        trim: true,
-    },
+    // pending: {
+    //     type: Number,
+    //     required: true,
+    //     trim: true,
+    // },
 
     amount: {
         type: Number,
@@ -57,6 +56,16 @@ const PaymentSchema = mongoose.Schema({
         trim: true,
     },
    
+    actions: [{
+        type: {
+            fullName: { type: String, required: true },
+            role: { type: String, required: true },
+            action: { type: String, required: true },
+            date: { type: Date, required: true, default: Date.now() },
+        },
+        required: true,
+    }],
+
     createdAt: {
         type: Date,
         default: Date.now()

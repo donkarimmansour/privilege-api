@@ -1,9 +1,9 @@
 const DepartmentsRquest = require("../models/department")
 
 // get All Departments
-const getAllDepartments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
+const getAllDepartments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"floorName" : { "$ne": "x" }}', select = null) => {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { 
 
         DepartmentsRquest.find({}, (errFind, departments) => { 
 
@@ -32,7 +32,7 @@ const getAllDepartments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filt
 }
 
 // get All Departments Count
-const getAllDepartmentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
+const getAllDepartmentsCount = (filter = '{"floorName" : { "$ne": "x" }}') => {
 
     return new Promise((resolve, reject) => {
 
@@ -56,13 +56,13 @@ const getAllDepartmentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Department
-const createDepartment = (headOfDepartment, departmentName, brief) => {
+const createDepartment = (floorName , className, brief, actions) => {
 
     return new Promise((resolve, reject) => { // check email
 
                 // inser a new Department
                 DepartmentsRquest.create({
-                    headOfDepartment, departmentName, brief
+                    floorName , className, brief, actions:[actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -75,7 +75,7 @@ const createDepartment = (headOfDepartment, departmentName, brief) => {
 }
 
 // edit Department
-const editDepartment = (id, headOfDepartment, departmentName, brief) => {
+const editDepartment = (id, floorName , className, brief, actions) => {
     return new Promise((resolve, reject) => { // update Department
         // check id
         DepartmentsRquest.findOne({}, (errFind, Department) => {
@@ -87,7 +87,7 @@ const editDepartment = (id, headOfDepartment, departmentName, brief) => {
             }else {
 
                 DepartmentsRquest.updateOne({}, {
-                    headOfDepartment, departmentName, brief ,
+                    floorName , className, brief , $push: {actions},
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {

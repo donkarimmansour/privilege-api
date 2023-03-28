@@ -1,33 +1,33 @@
-const CoursesRquest = require("../models/course")
+const LanguagesRquest = require("../models/language")
 
-// get All Courses
-const getAllCourses = (sort, limit, skip, filter) => {
+// get All Languages
+const getAllLanguages = (sort, limit, skip, filter) => {
 
         return new Promise((resolve, reject) => { 
 
-            CoursesRquest.aggregate([
-                { $lookup: { from: `students`, localField: `_id`, foreignField: "className", as: `studentsCount` } },
+            LanguagesRquest.aggregate([
+                { $lookup: { from: `students`, localField: `_id`, foreignField: "language", as: `studentsCount` } },
                 { $lookup: { from: `teachers`, localField: `_id`, foreignField: "teach", as: `teachersCount` } },
                 { $addFields: { studentsCount: { $size: "$studentsCount" } } },
                 { $addFields: { teachersCount: { $size: "$teachersCount" } } },
                 {
                     $project: {
                         studentsCount: 1, teachersCount: 1, name: 1, description: 1, image: 1, createdAt: 1, updatedAt: 1,
-                        _id: { $toString: "$_id" }
+                        session: 1, actions: 1, _id: { $toString: "$_id" }
                     }
                 },
                 { $match: filter ? JSON.parse(filter) : {} },
                 { $skip: skip ? parseInt(skip) : 0 },
                 { $limit: limit ? parseInt(limit) : 1000 },
                 { $sort: sort ? JSON.parse(sort) : { "_id": 1 } },
-            ]).exec().then(courses => {
+            ]).exec().then(languages => {
     
-                if (courses.length <= 0) {
-                    reject("there are no Courses")
+                if (languages.length <= 0) {
+                    reject("there are no Languages")
                     return
                 }
     
-                resolve(courses)
+                resolve(languages)
     
             }).catch(err => { reject(err) })
     
@@ -37,21 +37,21 @@ const getAllCourses = (sort, limit, skip, filter) => {
 }
 
 
-// get All Courses Count
-const getAllCoursesCount = (filter = '{"username" : { "$ne": "x" }}') => {
+// get All Languages Count
+const getAllLanguagesCount = (filter = '{"username" : { "$ne": "x" }}') => {
 
     return new Promise((resolve, reject) => {
 
-        CoursesRquest.find({}, (errFind, courses) => {
+        LanguagesRquest.find({}, (errFind, languages) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (courses.length <= 0) {
-                reject("there are no Courses")
+            } else if (languages.length <= 0) {
+                reject("there are no Languages")
             } else {
 
 
-                resolve(courses)
+                resolve(languages)
 
             }
 
@@ -61,13 +61,13 @@ const getAllCoursesCount = (filter = '{"username" : { "$ne": "x" }}') => {
     })
 }
 
-// create Course
-const createCourse = (name , description , image) => {
+// create Language
+const createLanguage = (name , description , session, actions) => {
 
     return new Promise((resolve, reject) => { // check email
-                // inser a new Course
-                CoursesRquest.create({
-                    name , description , image
+                // inser a new Language
+                LanguagesRquest.create({
+                    name , description , session, actions: [actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -82,21 +82,21 @@ const createCourse = (name , description , image) => {
     })
 }
 
-// edit Course
-const editCourse = (id, name , description , image) => {
-    return new Promise((resolve, reject) => { // update Course
+// edit Language
+const editLanguage = (id, name , description , session, actions) => {
+    return new Promise((resolve, reject) => { // update Language
         // check id
-        CoursesRquest.findOne({}, (errFind, Course) => {
+        LanguagesRquest.findOne({}, (errFind, language) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!Course) {
+            } else if (!language) {
                 reject("id not exist")
             }else {
 
 
-                CoursesRquest.updateOne({}, {
-                    name , description , image , updatedAt: Date.now() 
+                LanguagesRquest.updateOne({}, {
+                    name , description , session, $push: { actions } , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)
@@ -124,46 +124,46 @@ const editCourse = (id, name , description , image) => {
 }
 
 
-// edit Course Image
-const editCourseImage = (id, image) => {
-    return new Promise((resolve, reject) => { // update user
-        // check id
-        CoursesRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, course) => {
-            if (errFind) {
-                reject(errFind)
-            } else if (!course) {
-                reject("id not exist")
-            } else {
+// // edit Language Image
+// const editLanguageImage = (id, image) => {
+//     return new Promise((resolve, reject) => { // update user
+//         // check id
+//         LanguagesRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, Language) => {
+//             if (errFind) {
+//                 reject(errFind)
+//             } else if (!Language) {
+//                 reject("id not exist")
+//             } else {
 
-                //update
-                resolve(course.image)
+//                 //update
+//                 resolve(Language.image)
 
-            }
+//             }
 
-        }).where("_id").equals(id)
-
-
-
-    })
-}
+//         }).where("_id").equals(id)
 
 
-// delete Course
-const deleteCourse = (id) => {
+
+//     })
+// }
+
+
+// delete Language
+const deleteLanguage = (id) => {
 
     return new Promise((resolve, reject) => {
 
         // check id
-        CoursesRquest.findOne({}, (errFind, course) => {
+        LanguagesRquest.findOne({}, (errFind, language) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!course) {
+            } else if (!language) {
                 reject("id not exist")
             } else {
 
                 //delete
-                CoursesRquest.deleteOne({}
+                LanguagesRquest.deleteOne({}
                     , (errUpdate, doc) => {
                         if (errUpdate) {
                             reject(errUpdate)
@@ -185,4 +185,4 @@ const deleteCourse = (id) => {
 }
  
  
-module.exports = { getAllCourses, getAllCoursesCount, createCourse, editCourse, editCourseImage, deleteCourse }
+module.exports = { getAllLanguages, getAllLanguagesCount, createLanguage, editLanguage, deleteLanguage }

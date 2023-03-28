@@ -14,8 +14,8 @@ const ApiEndpoints = {
     me: `/me`, 
   },
 
-  Professors: { 
-    route: `${Host.PREFIX}/professors`, 
+  Teachers: { 
+    route: `${Host.PREFIX}/teachers`, 
     create: `/create`, 
     edit: `/edit/:id`, 
     delete: `/delete/:id`, 
@@ -67,14 +67,14 @@ const ApiEndpoints = {
     list: `/list`, 
   },
 
-  Course: { 
-    route: `${Host.PREFIX}/course`, 
+  Languages: { 
+    route: `${Host.PREFIX}/languages`, 
     create: `/create`, 
     edit: `/edit/:id`, 
     delete: `/delete/:id`, 
     count: `/count`, 
     list: `/list`, 
-    image: `/image/:id`
+    // image: `/image/:id`
 
   },
 
@@ -82,9 +82,20 @@ const ApiEndpoints = {
     route: `${Host.PREFIX}/notifications`, 
     list: `/list`, 
     create: `/create`, 
-    edit: `/edit/:id`, 
     delete: `/delete/:id`, 
+    seen: `/seen/:id`,  
+    count: `/count`,  
+  }, 
+
+  Bills: { 
+    route: `${Host.PREFIX}/bills`, 
+    list: `/list`, 
+    count: `/count`, 
+    create: `/create`, 
+    delete: `/delete/:id`, 
+    edit: `/edit/:id`, 
   },
+
 
 
   Exam: { 

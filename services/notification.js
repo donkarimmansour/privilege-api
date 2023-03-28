@@ -1,11 +1,11 @@
 const NotificationsRquest = require("../models/notification")
 
 // get All Notifications
-const getAllNotifications = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null) => {
+const getAllNotifications = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
     return new Promise((resolve, reject) => {
 
-        NotificationsRquest.find({}, (errFind, notifications) => { 
+        NotificationsRquest.find({}, (errFind, notifications) => {
 
 
             if (errFind) {
@@ -13,47 +13,73 @@ const getAllNotifications = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, fi
             } else if (notifications.length <= 0) {
                 reject("there are no notifications")
             } else {
- 
+
 
                 resolve(notifications)
 
             }
 
 
-        })
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+        }).populate(expend)
+        .select(select)
+        .sort(JSON.parse(sort))
+        .limit(parseInt(limit))
+        .skip(parseInt(skip)) 
+        .setQuery({ ...JSON.parse(filter) })
 
 
     })
 }
 
 
+// get All Notification Count
+const getAllNotificationsCount = (filter = '{"username" : { "$ne": "x" }}') => {
+
+    return new Promise((resolve, reject) => {
+
+        NotificationsRquest.find({}, (errFind, Notifications) => {
+
+            if (errFind) {
+                reject(errFind)
+            } else if (Notifications.length <= 0) {
+                reject("there are no Notifications")
+            } else {
+
+
+                resolve(Notifications)
+
+            }
+
+
+        }).count({ ...JSON.parse(filter) })
+
+    })
+}
 
 // create Notification
-const createNotification = (data) => {
+const createNotification = (message, listIds, title , actions) => {
 
     return new Promise((resolve, reject) => { // check email
 
-                // inser a new Notification
-                NotificationsRquest.create({
-                    data
-                }, (errInsert, res) => {
+               const list = listIds.map(l => ({ message, title, actions: [actions], studentID: l.id, firstname: l.firstname, lastname: l.lastname }))
+
+                // insert Notifications
+                NotificationsRquest.create(list, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
-                        return
+                    } else {
+                                                
+                        resolve(list.map((n, i) => res.find(r => n.studentID == r.studentID ) ? ({id: res[i]._id, firstname: n.firstname, lastname: n.lastname}) : null).filter(n => !!n))
                     }
-                    resolve(res._id)
-
                 })
+
+
     })
 }
 
-// edit Notification
-const editNotification = (id, data) => {
+
+// seen Notification
+const seenNotification = (id, actions) => {
     return new Promise((resolve, reject) => { // update Notification
         // check id
         NotificationsRquest.findOne({}, (errFind, notification) => {
@@ -65,7 +91,8 @@ const editNotification = (id, data) => {
             }else {
 
                 NotificationsRquest.updateOne({}, {
-                    data ,
+                    seen: true,
+                    $push : { actions },
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
@@ -87,13 +114,8 @@ const editNotification = (id, data) => {
             }
 
         }).where("_id").equals(id)
-
-
-
     })
 }
-
-
 
 // delete Notification
 const deleteNotification = (id) => {
@@ -110,14 +132,11 @@ const deleteNotification = (id) => {
             } else {
 
                 //delete
-                NotificationsRquest.deleteOne({}
-                    , (errUpdate, doc) => {
+                NotificationsRquest.deleteOne({}, (errUpdate, doc) => {
+
                         if (errUpdate) {
                             reject(errUpdate)
-                            return
-                        }
-
-                        if (doc.deletedCount > 0) {
+                        }else if (doc.deletedCount > 0) {
                             resolve("deleted")
 
                         } else {
@@ -132,4 +151,4 @@ const deleteNotification = (id) => {
 }
 
 
-module.exports = { getAllNotifications, createNotification, editNotification, deleteNotification  }
+module.exports = { getAllNotifications, createNotification, deleteNotification, seenNotification, getAllNotificationsCount }

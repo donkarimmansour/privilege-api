@@ -1,9 +1,10 @@
 const PaymentsRquest = require("../models/payment")
+const BillsRquest = require("../models/bill")
 
 // get All Payments
 const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
-    const newExpend = expend === "all" ? [{ path: 'studentID', model: 'student' , populate : {path : 'className', model: 'course'}}] : expend
+    const newExpend = expend === "all" ? [{ path: 'studentID', model: 'student', populate: { path: 'language', model: 'language' } }] : expend
 
     return new Promise((resolve, reject) => {
 
@@ -59,52 +60,110 @@ const getAllPaymentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Payment
-const createPayment = (studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount) => {
+const createPayment = (studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions) => {
 
-    return new Promise((resolve, reject) => { 
+    return new Promise((resolve, reject) => {
+        
 
-                // inser a new Payment
-                PaymentsRquest.create({
-                    studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount
+        if(feesType === "language"){
+            BillsRquest.findOne({ studentID }, (errFind, bill) => {
+                if (errFind) {
+                    reject(errFind)
+                } else if (!bill) {
+                    reject("there is no Bill")
+                } else {
 
-                }, (errInsert, res) => {
-                    if (errInsert) {
-                        reject(errInsert)
-                        return
+                    if (amount < bill.amount) {
+                        bill.amount -= amount
+                        bill.actions.push([{...actions, action: "add"}])                        
+                        bill.save()
+    
+                        // inser a new Payment
+                        PaymentsRquest.create({
+                            studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions: [actions]
+                        }, (errInsert, res) => {
+                            if (errInsert) {
+                                reject(errInsert)
+                            } else {
+                                resolve(res._id)
+                            }
+    
+                        })
+    
+    
+                    } else if (amount == bill.amount) {
+    
+                        BillsRquest.deleteOne({ studentID }, (errUpdate, doc) => {
+                            if (errUpdate) {
+                                reject(errUpdate)
+                            } else if (doc.deletedCount > 0) {
+    
+    
+                                // inser a new Payment
+                                PaymentsRquest.create({
+                                    studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions: [actions]
+                                }, (errInsert, res) => {
+                                    if (errInsert) {
+                                        reject(errInsert)
+                                    } else {
+                                        resolve(res._id)
+                                    }
+    
+                                })
+    
+    
+                            } else {
+                                reject("something went wrong")
+                            }
+                        })
+                    } else {
+                        reject("amount can't be greater then bill cost")
                     }
+                }
+            })
+        }else{
 
-
+              // inser a new Payment
+              PaymentsRquest.create({
+                studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions: [actions]
+            }, (errInsert, res) => {
+                if (errInsert) {
+                    reject(errInsert)
+                } else {
                     resolve(res._id)
+                }
+
+            })
 
 
-                })
+        }
 
     })
 }
 
 // edit Payment
-const editPayment = (id, studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount) => {
+const editPayment = (id, studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions) => {
     return new Promise((resolve, reject) => { // update Payment
 
-                PaymentsRquest.updateOne({}, {
-                    studentID, paymentStatus, paymentMethod, paymentDuration, paymentReference, paymentDetails, feesType, pending, amount ,
-                    updatedAt: Date.now()
-                }, (errUpdate, doc) => {
-                    if (errUpdate) {
-                        reject(errUpdate) 
-                        return
-                    } 
+        // PaymentsRquest.updateOne({}, {
+        //     studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, $push: {actions} ,
+        //     updatedAt: Date.now()
+        // }, (errUpdate, doc) => {
+        //     if (errUpdate) {
+        //         reject(errUpdate) 
+        //         return
+        //     } 
 
-                    if (doc.modifiedCount > 0) {
-                        resolve("modified")
+        //     if (doc.modifiedCount > 0) {
+        //         resolve("modified")
 
 
-                    } else {
-                        reject("something went wrong")
+        //     } else {
+        //         reject("something went wrong")
 
-                    }
+        //     }
 
-                }).where("_id").equals(id)
+        // }).where("_id").equals(id)
     })
 }
 
@@ -115,36 +174,36 @@ const deletePayment = (id) => {
 
     return new Promise((resolve, reject) => {
 
-        // check id
-        PaymentsRquest.findOne({}, (errFind, payment) => {
+        // // check id
+        // PaymentsRquest.findOne({}, (errFind, payment) => {
 
-            if (errFind) {
-                reject(errFind)
-            } else if (!payment) {
-                reject("id not exist")
-            } else {
+        //     if (errFind) {
+        //         reject(errFind)
+        //     } else if (!payment) {
+        //         reject("id not exist")
+        //     } else {
 
-                //delete
-                PaymentsRquest.deleteOne({}
-                    , (errUpdate, doc) => {
-                        if (errUpdate) {
-                            reject(errUpdate)
-                            return
-                        }
+        //         //delete
+        //         PaymentsRquest.deleteOne({}
+        //             , (errUpdate, doc) => {
+        //                 if (errUpdate) {
+        //                     reject(errUpdate)
+        //                     return
+        //                 }
 
-                        if (doc.deletedCount > 0) {
-                            resolve("deleted")
+        //                 if (doc.deletedCount > 0) {
+        //                     resolve("deleted")
 
-                        } else {
-                            reject("something went wrong")
-                        }
+        //                 } else {
+        //                     reject("something went wrong")
+        //                 }
 
-                    }).where("_id").equals(id)
-            }//else
-        }).where("_id").equals(id)
+        //             }).where("_id").equals(id)
+        //     }//else
+        // }).where("_id").equals(id)
 
     })
 }
 
 
-module.exports = { getAllPayments, getAllPaymentsCount, createPayment, editPayment, deletePayment  }
+module.exports = { getAllPayments, getAllPaymentsCount, createPayment, editPayment, deletePayment }

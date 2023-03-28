@@ -93,7 +93,7 @@ const forgotPassword = (email , role) => {
 
                            // send Email Verification
                            mailer.sendMAIL(email, "new Password", html)
-                           .then((succ) => resolve("new Sent password"))
+                           .then((succ) => resolve("new password sent"))
                            .catch(error => reject(error))
             
                         } else {

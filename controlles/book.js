@@ -4,9 +4,9 @@ const codes = require("../common/codes")
 
 // get All Books
 const getAllBooks = (req, res) => {
-    const { sort, limit, skip, filter, select } = req.query;
+    const { sort, limit, skip, filter, select, expend } = req.query;
 
-    BookModel.getAllBooks(sort, limit, skip, filter, select).then(result => {
+    BookModel.getAllBooks(sort, limit, skip, filter, select, expend).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -27,9 +27,9 @@ const getAllBooksCount = (req, res) => {
 
 // create Book
 const createBook = (req, res) => {
-    const { title, status, language, level } = req.body;
+    const { title, quantity, language, level, actions } = req.body;
 
-    BookModel.createBook( title, status, language, level).then(result => {
+    BookModel.createBook( title, quantity, language, level, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createBook = (req, res) => {
 
 // edit Books
 const editBook = (req, res) => {
-    const {  title, status, language, level} = req.body;
+    const {  title, quantity, language, level, actions} = req.body;
     const { id } = req.params;
 
-    BookModel.editBook(id,  title, status, language, level).then(result => {
+    BookModel.editBook(id,  title, quantity, language, level, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

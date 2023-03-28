@@ -5,23 +5,33 @@ const BookSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-    },
+    }, 
 
-    status: {
-        type: String,
+    quantity: {
+        type: Number,
         required: true,
         trim: true,
     },
     language: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
+        ref : "language"
     },
-    level: { 
-        type: String,
+    level: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
-    },
+        ref : "level"
+    }, 
+
+    actions: [{
+        type: {
+            fullName: { type: String, required: true },
+            role: { type: String, required: true },
+            action: { type: String, required: true },
+            date: { type: Date, required: true, default: Date.now() },
+        },
+        required: true,
+    }],
 
     createdAt: {
         type: Date,

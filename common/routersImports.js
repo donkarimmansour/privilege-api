@@ -3,7 +3,7 @@ const {handleError} = require("../middlewares/handleErrors")
 const {idValidator} = require("../middlewares/idValidator")
 const {HandleValidatorError} = require("../middlewares/handleValidatorError")
 const passport = require("passport")
-const {ApiEndpoints ,} = require("../common/apiEndpoints")
+const {ApiEndpoints ,} = require("./apiEndpoints")
 
 module.exports = {
     check ,

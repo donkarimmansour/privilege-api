@@ -27,9 +27,9 @@ const getAllStudentsCount = (req, res) => {
 
 // create Student
 const createStudent = (req, res) => {
-    const {tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image} = req.body;
+    const {tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated , image, actions, amount} = req.body;
 
-    StudentModel.createStudent(tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated , image).then(result => {
+    StudentModel.createStudent(tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated , image, actions, amount).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createStudent = (req, res) => {
 
 // edit Students
 const editStudent = (req, res) => {
-    const { tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated} = req.body;
+    const { tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated, actions, amount} = req.body;
     const { id } = req.params;
 
-    StudentModel.editStudent(id, tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated).then(result => {
+    StudentModel.editStudent(id, tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated, actions, amount).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -52,10 +52,10 @@ const editStudent = (req, res) => {
 
 // edit Student Profile
 const editStudentProfile = (req, res) => {
-    const { firstname, lastname, phone, email, password, facebook, twitter, linkedin  } = req.body;
+    const { firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions  } = req.body;
     const { id } = req.params;
 
-    StudentModel.editStudentProfile(id, firstname, lastname, phone, email, password, facebook, twitter, linkedin).then(result => {
+    StudentModel.editStudentProfile(id, firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -64,10 +64,10 @@ const editStudentProfile = (req, res) => {
 
 // edit Student Image
 const editStudentImage = (req, res) => {
-    const { image } = req.body;
+    const { image, actions } = req.body;
     const { id } = req.params;
 
-    StudentModel.editStudentImage(id, image).then(result => {
+    StudentModel.editStudentImage(id, image, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

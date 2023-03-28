@@ -9,13 +9,16 @@ const StudentValidator= [
    check("phone").notEmpty().withMessage("phone field is required") ,
    check("birthday").notEmpty().withMessage("birthday field is required") ,
    check("gender").notEmpty().withMessage("gender field is required") ,
-   check("className").notEmpty().withMessage("class field is required") ,
+   check("language").notEmpty().withMessage("language field is required") ,
    check("hours").notEmpty().withMessage("hours field is required") ,
    check("option").notEmpty().withMessage("option field is required") ,
    check("session").notEmpty().withMessage("session field is required") ,
    check("cin").notEmpty().withMessage("cin field is required") ,
    check("username").notEmpty().withMessage("username field is required") ,
    check("isAccountActivated").notEmpty().withMessage("type field is required"),
+   check("tested").notEmpty().withMessage("tested field is required"),
+   check("actions").notEmpty().withMessage("actions field is required"),
+   check("amount").notEmpty().withMessage("amount field is required"),
 ]
 
 const StudentProfileValidator= [
@@ -25,10 +28,12 @@ const StudentProfileValidator= [
    check("email").isEmail().withMessage("email must be email") ,
    // check("password").notEmpty().withMessage("password field is required") ,
    check("phone").notEmpty().withMessage("phone field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
  const ImageValidator= [
    check("image").notEmpty().withMessage("image field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 
@@ -38,45 +43,54 @@ const SignInValidator = [
 ]
 
  const forgotPasswordValidator = [
-    check("email").notEmpty().withMessage("email field is required") 
+    check("email").notEmpty().withMessage("email field is required"),
  ]
 
  const DepartmentValidator = [
-   check("headOfDepartment").notEmpty().withMessage("Head of Department field is required") ,
-   check("departmentName").notEmpty().withMessage("Department Name field is required") 
+   check("floorName").notEmpty().withMessage("floor Name field is required") ,
+   check("className").notEmpty().withMessage("class Name field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
-const CourseValidator = [
+const LanguageValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
-   check("description").notEmpty().withMessage("description field is required") 
+   check("description").notEmpty().withMessage("description field is required"),
+   check("session").notEmpty().withMessage("session field is required"),
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
-
+ 
 const GroupValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
    check("level").notEmpty().withMessage("level field is required") ,
    check("department").notEmpty().withMessage("department field is required") , 
-   check("position").notEmpty().withMessage("position field is required") 
+   check("language").notEmpty().withMessage("language field is required"),
+   check("session").notEmpty().withMessage("session field is required"),
+   check("teacher").notEmpty().withMessage("teacher field is required"),
+   check("option").notEmpty().withMessage("option field is required"),
+   check("calindar").notEmpty().withMessage("calindar field is required"),
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const LevelValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
-   check("className").notEmpty().withMessage("class field is required") ,
+   check("languages").notEmpty().withMessage("languages field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const PaymentValidator = [
    check("studentID").notEmpty().withMessage("Student Name field is required") ,
-   check("paymentStatus").notEmpty().withMessage("Payment Status field is required") ,
    check("paymentMethod").notEmpty().withMessage("Payment Method field is required") ,
-   check("paymentDuration").notEmpty().withMessage("Payment Duration field is required") ,
-   check("pending").notEmpty().withMessage("pending field is required") ,
+   check("feesType").notEmpty().withMessage("feesType field is required") ,
    check("amount").notEmpty().withMessage("Amount field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const BookValidator = [
    check("title").notEmpty().withMessage("title field is required") ,
-   check("status").notEmpty().withMessage("status field is required") ,
+   check("quantity").notEmpty().withMessage("quantity field is required") ,
    check("level").notEmpty().withMessage("level field is required") ,
    check("language").notEmpty().withMessage("language field is required") ,
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const TeacherValidator = [
@@ -89,8 +103,9 @@ const TeacherValidator = [
    check("birthday").notEmpty().withMessage("birthday field is required") ,
    check("gender").notEmpty().withMessage("gender field is required") ,
    check("username").notEmpty().withMessage("username field is required") ,
-   check("isAccountActivated").notEmpty().withMessage("type is required"),
-   check("teach").notEmpty().withMessage("teach field is required"),
+   check("isAccountActivated").notEmpty().withMessage("type field is required"),
+   check("language").notEmpty().withMessage("language field is required"),
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const SmtpValidator = [
@@ -100,7 +115,7 @@ const SmtpValidator = [
    check("email").notEmpty().withMessage("email field is required"),
    check("name").notEmpty().withMessage("name field is required"),
    check("security").notEmpty().withMessage("security field is required"),
-   check("password").notEmpty().withMessage("password field is required"),
+   check("password").notEmpty().withMessage("password field is required")
 ]
 
 const ExamValidator = [
@@ -108,7 +123,7 @@ const ExamValidator = [
    check("studentID").notEmpty().withMessage("studentID field is required"),
    check("rate").notEmpty().withMessage("rate field is required"),
    check("quizzes").notEmpty().withMessage("quizzes field is required"),
-   check("successed").notEmpty().withMessage("successed field is required"),
+   check("successed").notEmpty().withMessage("successed field is required")
 ]
 
 const AdminValidator = [
@@ -123,12 +138,24 @@ const AdminValidator = [
    check("username").notEmpty().withMessage("username field is required") ,
    check("role").notEmpty().withMessage("role field is required") ,
    check("isAccountActivated").notEmpty().withMessage("type field is required"),
+   check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 const NotificationValidator = [
- 
+   check("actions").notEmpty().withMessage("actions field is required"),
+   check("message").notEmpty().withMessage("message field is required"),
+   check("listIds").notEmpty().withMessage("listIds field is required"),
+   check("title").notEmpty().withMessage("title field is required"),
 ]
 
+const BillValidator = [
+   check("studentID").notEmpty().withMessage("studentID field is required"),
+   check("amount").notEmpty().withMessage("amount field is required"),
+   check("actions").notEmpty().withMessage("actions field is required"),
+]
+
+
+ 
 
 
 module.exports = {
@@ -138,7 +165,7 @@ module.exports = {
    SignInValidator ,
    forgotPasswordValidator  ,
    DepartmentValidator ,
-   CourseValidator ,
+   LanguageValidator ,
    GroupValidator ,
    LevelValidator , 
    PaymentValidator ,
@@ -147,5 +174,6 @@ module.exports = {
    SmtpValidator ,
    NotificationValidator ,
    ExamValidator ,
-   AdminValidator
+   AdminValidator ,
+   BillValidator
 }

@@ -5,7 +5,7 @@ const getAllTeachers = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
 
     return new Promise((resolve, reject) => {
 
-        const newExpend = expend === "all" ? [{path: 'teach', model: 'course'}] : expend
+        const newExpend = expend === "all" ? [{path: 'language', model: 'language'}] : expend
 
         TeachersRquest.find({}, (errFind, teachers) => {
 
@@ -59,7 +59,7 @@ const getAllTeachersCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Teacher
-const createTeacher = (firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, teach, website , note , isAccountActivated , image) => {
+const createTeacher = (firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, website , note , isAccountActivated , image, actions) => {
 
     return new Promise((resolve, reject) => { // check email
         TeachersRquest.findOne({}, (errFind, Teacher) => {
@@ -71,7 +71,7 @@ const createTeacher = (firstname, lastname, gender, phone, birthday, username, e
             } else {
                 // inser a new Teacher
                 TeachersRquest.create({
-                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, teach, website , note  ,
+                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, website , note, actions: [actions],
                     password: new TeachersRquest().hashPassword(password), image , isAccountActivated
 
                 }, (errInsert, res) => {
@@ -94,7 +94,7 @@ const createTeacher = (firstname, lastname, gender, phone, birthday, username, e
 }
 
 // edit Teacher
-const editTeacher = (id, firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, teach, website , note , isAccountActivated , image) => {
+const editTeacher = (id, firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, website , note , isAccountActivated , image, actions) => {
     return new Promise((resolve, reject) => { // update Teacher
         // check id
         TeachersRquest.findOne({}, (errFind, Teacher) => {
@@ -119,8 +119,8 @@ const editTeacher = (id, firstname, lastname, gender, phone, birthday, username,
 
 
                 TeachersRquest.updateOne({}, {
-                    password: newpassword,
-                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, teach, website , note  ,
+                    password: newpassword, $push: {actions},
+                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, website , note  ,
                     updatedAt: Date.now() , isAccountActivated , image
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
@@ -150,7 +150,7 @@ const editTeacher = (id, firstname, lastname, gender, phone, birthday, username,
 
 
 // edit Teacher Profile
-const editTeacherProfile = (id, firstname, lastname, phone, email, website , password, facebook, twitter, linkedin) => {
+const editTeacherProfile = (id, firstname, lastname, phone, email, website , password, facebook, twitter, linkedin, actions) => {
     return new Promise((resolve, reject) => { // update Teacher
         // check id
         TeachersRquest.findOne({}, (errFind, teacher) => {
@@ -173,7 +173,7 @@ const editTeacherProfile = (id, firstname, lastname, phone, email, website , pas
                 const newpassword = (password == "") ? teacher.password : teacher.hashPassword(password)
 
                 TeachersRquest.updateOne({}, {
-                    password: newpassword,
+                    password: newpassword, $push: {actions},
                     firstname, lastname, phone, email, website , facebook, twitter, linkedin ,
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
@@ -204,10 +204,10 @@ const editTeacherProfile = (id, firstname, lastname, phone, email, website , pas
 
 
 // edit Teacher Image
-const editTeacherImage = (id, image) => {
+const editTeacherImage = (id, image, actions) => {
     return new Promise((resolve, reject) => { // update user
         // check id
-        TeachersRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, teacher) => {
+        TeachersRquest.findOneAndUpdate({}, { image, $push: {actions}, updatedAt: Date.now() }, (errFind, teacher) => {
             if (errFind) {
                 reject(errFind)
             } else if (!teacher) {

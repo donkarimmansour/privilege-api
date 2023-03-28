@@ -61,7 +61,7 @@ const getAllAdminsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Admin
-const createAdmin = (firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image) => {
+const createAdmin = (firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image, actions) => {
 
     return new Promise((resolve, reject) => { // check email
         AdminsRquest.findOne({}, (errFind, Admin) => {
@@ -73,7 +73,7 @@ const createAdmin = (firstname, lastname, gender, phone, birthday, username, ema
             } else {
                 // inser a new Admin
                 AdminsRquest.create({
-                    firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , 
+                    firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , actions: [actions],
                     password: new AdminsRquest().hashPassword(password), image , isAccountActivated
 
                 }, (errInsert, res) => {
@@ -96,7 +96,7 @@ const createAdmin = (firstname, lastname, gender, phone, birthday, username, ema
 }
 
 // edit Admin
-const editAdmin = (id,firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated) => {
+const editAdmin = (id,firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated, actions) => {
     return new Promise((resolve, reject) => { // update Admin
         // check id
         AdminsRquest.findOne({}, (errFind, Admin) => {
@@ -120,7 +120,7 @@ const editAdmin = (id,firstname, lastname, gender, phone, birthday, username, em
                 const newpassword = (password == "") ? Admin.password : Admin.hashPassword(password)
 
                 AdminsRquest.updateOne({}, {
-                    password: newpassword ,
+                    password: newpassword , $push: {actions},
                     firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin , role , 
                     updatedAt: Date.now() , isAccountActivated
                 }, (errUpdate, doc) => {
@@ -151,7 +151,7 @@ const editAdmin = (id,firstname, lastname, gender, phone, birthday, username, em
 
 
 // edit Admin Profile
-const editAdminProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin) => {
+const editAdminProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions) => {
     return new Promise((resolve, reject) => { // update Admin
         // check id
         AdminsRquest.findOne({}, (errFind, Admin) => {
@@ -174,7 +174,7 @@ const editAdminProfile = (id, firstname, lastname, phone, email, password, faceb
                 const newpassword = (password == "") ? Admin.password : Admin.hashPassword(password)
 
                 AdminsRquest.updateOne({}, {
-                    password: newpassword,
+                    password: newpassword, $push: {actions},
                     firstname, lastname, phone, email, facebook, twitter, linkedin,
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {

@@ -27,9 +27,9 @@ const getAllAdminsCount = (req, res) => {
 
 // create Admin
 const createAdmin = (req, res) => {
-    const {firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image} = req.body;
+    const {firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image, actions} = req.body;
 
-    AdminModel.createAdmin(firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image).then(result => {
+    AdminModel.createAdmin(firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated , image, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         console.log(result);
@@ -40,10 +40,10 @@ const createAdmin = (req, res) => {
 
 // edit Admins
 const editAdmin = (req, res) => {
-    const { firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated} = req.body;
+    const { firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated, actions} = req.body;
     const { id } = req.params;
 
-    AdminModel.editAdmin(id, firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated).then(result => {
+    AdminModel.editAdmin(id, firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin , role , isAccountActivated, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -53,10 +53,10 @@ const editAdmin = (req, res) => {
 
 // edit Admin Profile
 const editAdminProfile = (req, res) => {
-    const { firstname, lastname, phone, email, password, facebook, twitter, linkedin  } = req.body;
+    const { firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions  } = req.body;
     const { id } = req.params;
 
-    AdminModel.editAdminProfile(id, firstname, lastname, phone, email, password, facebook, twitter, linkedin).then(result => {
+    AdminModel.editAdminProfile(id, firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -65,10 +65,10 @@ const editAdminProfile = (req, res) => {
 
 // edit Admin Image
 const editAdminImage = (req, res) => {
-    const { image } = req.body;
+    const { image, actions } = req.body;
     const { id } = req.params;
 
-    AdminModel.editAdminImage(id, image).then(result => {
+    AdminModel.editAdminImage(id, image, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

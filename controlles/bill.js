@@ -1,23 +1,23 @@
-const LevelModel = require("../services/level")
-const codes = require("../common/codes") 
+const BillModel = require("../services/Bill")
+const codes = require("../common/codes")
 
+  
+// get All Bills
+const getAllBills = (req, res) => {
+    const { sort, limit, skip, filter, select, expend } = req.query;
 
-// get All Levels
-const getAllLevels = (req, res) => {
-    const { sort, limit, skip, filter } = req.query;
-
-    LevelModel.getAllLevels(sort, limit, skip, filter).then(result => {
+    BillModel.getAllBills(sort, limit, skip, filter, select, expend).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
-    }) 
+    })
 }
 
-// get All Levels Count
-const getAllLevelsCount = (req, res) => {
+// get All Bills Count
+const getAllBillsCount = (req, res) => {
     const { filter } = req.query;
 
-    LevelModel.getAllLevelsCount(filter).then(result => {
+    BillModel.getAllBillsCount(filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         console.log(result);
@@ -25,36 +25,34 @@ const getAllLevelsCount = (req, res) => {
     })
 }
 
-// create Level
-const createLevel = (req, res) => {
-    const { name, languages, actions} = req.body;
+// create Bill
+const createBill = (req, res) => {
+    const { studentID, amount, actions } = req.body;
 
-    LevelModel.createLevel(name, languages, actions).then(result => {
+    BillModel.createBill(studentID, amount, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
 
-
-// edit Levels
-const editLevel = (req, res) => {
-    const { name, languages: { _id }, actions} = req.body;
+// edit Bill
+const editBill = (req, res) => {
+    const { studentID, amount, actions } = req.body;
     const { id } = req.params;
 
-    LevelModel.editLevel(id, name, _id, actions).then(result => {
+    BillModel.editBill(id, studentID, amount, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 } 
 
-
-// delete Level
-const deleteLevel = (req, res) => {
+// delete Bill
+const deleteBill = (req, res) => {
     const { id } = req.params;
 
-    LevelModel.deleteLevel(id).then(result => {
+    BillModel.deleteBill(id).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -63,4 +61,4 @@ const deleteLevel = (req, res) => {
 
 
 
-module.exports = { getAllLevels, getAllLevelsCount, createLevel, editLevel, deleteLevel }
+module.exports = { getAllBills, createBill, deleteBill, editBill, getAllBillsCount }

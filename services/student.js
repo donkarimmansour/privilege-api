@@ -1,4 +1,5 @@
 const StudentsRquest = require("../models/student")
+const BillsRquest = require("../models/bill")
 
 // get All Students
 const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
@@ -6,7 +7,7 @@ const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
     
     return new Promise((resolve, reject) => {
 
-        const newExpend = expend === "all" ? [{path: 'className', model: 'course'}, {path: 'group',model: 'group'}, {path: 'level',model: 'level'}] : expend
+        const newExpend = expend === "all" ? [{path: 'language', model: 'language'}, {path: 'group',model: 'group'}, {path: 'level',model: 'level'}] : expend
 
         StudentsRquest.find({}, (errFind, students) => {
 
@@ -15,12 +16,9 @@ const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter 
             } else if (students.length <= 0) {
                 reject("there are no students")
             } else {
-
-               
                 resolve(students)
 
             }
-
 
         }).populate(newExpend)
         .select(select)
@@ -63,7 +61,7 @@ const getAllStudentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Student
-const createStudent = (tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated, image) => {
+const createStudent = (tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated, image, actions, amount) => {
 
     return new Promise((resolve, reject) => { // check email
         StudentsRquest.findOne({}, (errFind, student) => {
@@ -76,18 +74,28 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
             } else {
                 // inser a new student
                 StudentsRquest.create({
-                    tested , firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, hours, option, session, cin,
+                    tested , firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, group, level , hours, option, session, cin, actions: [actions],
                     password: new StudentsRquest().hashPassword(password), image , isAccountActivated
 
                 }, (errInsert, res) => {
+
                     if (errInsert) {
                         reject(errInsert)
-                        return
+
+                    }else{
+
+                        BillsRquest.create({
+                            amount, studentID: res._id, actions: [actions]
+                        }, (errInsert, _res) => {
+                            if (errInsert) {
+                                reject(errInsert)
+                            } else {
+                                resolve(res._id)
+                            }
+                        })
+                        
+                     
                     }
-
-
-                    resolve(res._id)
-
 
                 })
             }
@@ -99,7 +107,7 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
 }
 
 // edit Student
-const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, className, group, level, hours, option, session, cin , isAccountActivated) => {
+const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, username, email, password, facebook, twitter, linkedin, language, group, level, hours, option, session, cin , isAccountActivated, actions, amount) => {
     return new Promise((resolve, reject) => { // update student
         // check id
         StudentsRquest.findOne({}, (errFind, student) => {
@@ -124,23 +132,47 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
 
 
                 StudentsRquest.updateOne({}, {
-                    password: newpassword,tested ,
-                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, className, group, level, hours, option, session, cin,
+                    password: newpassword,tested , $push: {actions},
+                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, group, level, hours, option, session, cin,
                     updatedAt: Date.now() , isAccountActivated
                 }, (errUpdate, doc) => {
+
                     if (errUpdate) {
                         reject(errUpdate)
-                        return
-                    }
+                         
+                    }else{
 
-                    if (doc.modifiedCount > 0) {
-                        resolve("modified")
+                        if (doc.modifiedCount > 0) {
+
+                            BillsRquest.findOne({studentID: id}, (errFind, bill) => {
+                                if (errFind) {
+                                    reject("something went wrong")
+                                } else if (!bill) {
+                                    BillsRquest.create({
+                                        amount, studentID: id, actions: [{...actions, action: "add"}]
+                                    }, (errInsert, _res) => {
+                                        if (errInsert) {
+                                            reject(errInsert)
+                                        } else {
+                                            resolve("modified")
+                                        }
+                                    })
+
+                                } else {
+                                    bill.amount = amount
+                                    bill.actions.push(actions)
+                                    bill.save()
+                                    resolve("modified")
+                                }
+                            })
 
 
-                    } else {
-                        reject("something went wrong")
+                        } else {
+                            reject("something went wrong")
 
-                    }
+                        }
+
+                }
 
                 }).where("_id").equals(id)
 
@@ -155,7 +187,7 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
 
 
 // edit Student Profile
-const editStudentProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin) => {
+const editStudentProfile = (id, firstname, lastname, phone, email, password, facebook, twitter, linkedin, actions) => {
     return new Promise((resolve, reject) => { // update student
         // check id
         StudentsRquest.findOne({}, (errFind, student) => {
@@ -178,7 +210,7 @@ const editStudentProfile = (id, firstname, lastname, phone, email, password, fac
                 const newpassword = (password == "") ? student.password : student.hashPassword(password)
 
                 StudentsRquest.updateOne({}, {
-                    password: newpassword,
+                    password: newpassword, $push: {actions},
                     firstname, lastname, phone, email, facebook, twitter, linkedin,
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
@@ -209,10 +241,10 @@ const editStudentProfile = (id, firstname, lastname, phone, email, password, fac
 
 
 // edit Student Image
-const editStudentImage = (id, image) => {
+const editStudentImage = (id, image, actions) => {
     return new Promise((resolve, reject) => { // update user
         // check id
-        StudentsRquest.findOneAndUpdate({}, { image, updatedAt: Date.now() }, (errFind, student) => {
+        StudentsRquest.findOneAndUpdate({}, { image, $push: {actions}, updatedAt: Date.now() }, (errFind, student) => {
             if (errFind) {
                 reject(errFind)
             } else if (!student) {

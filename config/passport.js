@@ -17,10 +17,14 @@ const newRole = (name , role , msg , testMod = false) => {
     }))
 }
 
+newRole("superAdmin" , ["superAdmin"] , "superAdmin permission denied" , true)
+newRole("admin" , ["admin"] , "admin permission denied" , true)
+newRole("teacher" , ["teacher"] , "teacher permission denied" , true)
+newRole("student" , ["student"] , "student Or admin permission denied" , true)
 
-newRole("student" , ["student" , "student permission denied" ] , "student Or admin permission denied" , true)
-newRole("teacher" , ["teacher" , "teacher permission denied" ] , "teacher permission denied" , true)
-newRole("admin" , ["admin" , "admin permission denied" ] , "admin permission denied" , true)
-newRole("teacherOradmin" , ["teacher" , "admin"] , "teacher Or admin permission denied" , true)
-newRole("all" , ["teacher", "student" , "admin"] , "teacher or student Or admin permission denied" , true)
+newRole("teacherOradminOrsuperAdmin" , ["admin" , "superAdmin", "teacher"] , "teacher Or admin Or superAdmin permission denied" , true)
+newRole("adminOrsuperAdmin" , ["admin" , "superAdmin"] , "admin Or superAdmin permission denied" , true)
+newRole("studentOrteacher" , ["student" , "teacher"] , "student Or teacher permission denied" , true)
+
+newRole("all" , ["teacher", "student", "admin", "superAdmin"] , "teacher or student Or admin Or superAdmin permission denied" , true)
 

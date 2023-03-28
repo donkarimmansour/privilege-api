@@ -27,9 +27,9 @@ const getAllDepartmentsCount = (req, res) => {
 
 // create Department
 const createDepartment = (req, res) => {
-    const { headOfDepartment, departmentName, brief} = req.body;
+    const {  floorName , className, brief, actions} = req.body;
 
-    DepartmentModel.createDepartment( headOfDepartment, departmentName, brief).then(result => {
+    DepartmentModel.createDepartment(floorName , className, brief, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,10 +39,10 @@ const createDepartment = (req, res) => {
 
 // edit Departments
 const editDepartment = (req, res) => {
-    const {  headOfDepartment, departmentName, brief} = req.body;
+    const {  floorName , className, brief, actions} = req.body;
     const { id } = req.params;
 
-    DepartmentModel.editDepartment(id,  headOfDepartment, departmentName, brief).then(result => {
+    DepartmentModel.editDepartment(id, floorName , className, brief, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

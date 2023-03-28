@@ -61,13 +61,11 @@ const TeacherSchema = mongoose.Schema({
         required: true,
         enum : ["no" , "yes"] ,
     } ,
-    teach: {
+    language: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
-        ref : "course"
+        ref : "language"
     },
-
     
     website: {
         type: String,
@@ -98,6 +96,16 @@ const TeacherSchema = mongoose.Schema({
         required: false,
         trim: true,
     },
+
+    actions: [{
+        type: {
+            fullName: { type: String, required: true },
+            role: { type: String, required: true },
+            action: { type: String, required: true },
+            date: { type: Date, required: true, default: Date.now() },
+        },
+        required: true,
+    }],
    
     createdAt: {
         type: Date,

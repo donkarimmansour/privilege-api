@@ -1,18 +1,26 @@
 const mongoose = require("mongoose")
 
-const LevelSchema = mongoose.Schema({
+const CourseSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true,
-    }, 
-
-    language: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref : "language"
+        trim: true, 
     },
 
+    description: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+ 
+    session: {
+        type: {
+            normale: { type: Number,  required: true},
+            accelerated: { type: Number,  required: false},
+            superAccelerated: { type: Number,  required: false},
+        },
+        required: true,
+    },
     actions: [{
         type: {
             fullName: { type: String, required: true },
@@ -22,7 +30,7 @@ const LevelSchema = mongoose.Schema({
         },
         required: true,
     }],
-    
+
     createdAt: {
         type: Date,
         default: Date.now()
@@ -35,7 +43,6 @@ const LevelSchema = mongoose.Schema({
    
 })
 
+const CoursesRquest = mongoose.model("language", CourseSchema)
 
-const LevelsRquest = mongoose.model("level", LevelSchema)
-
-module.exports =  LevelsRquest
+module.exports =  CoursesRquest
