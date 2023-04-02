@@ -1,23 +1,23 @@
-const BookModel = require("../services/book")
+const CancelationModel = require("../services/cancelation")
 const codes = require("../common/codes")
 
-
-// get All Books
-const getAllBooks = (req, res) => {
+ 
+// get All Cancelations
+const getAllCancelations = (req, res) => {
     const { sort, limit, skip, filter, select, expend } = req.query;
-
-    BookModel.getAllBooks(sort, limit, skip, filter, select, expend).then(result => {
+ 
+    CancelationModel.getAllCancelations(sort, limit, skip, filter, select, expend).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
- 
-// get All Books Count
-const getAllBooksCount = (req, res) => {
+
+// get All Cancelations Count
+const getAllCancelationsCount = (req, res) => {
     const { filter } = req.query;
 
-    BookModel.getAllBooksCount(filter).then(result => {
+    CancelationModel.getAllCancelationsCount(filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         console.log(result);
@@ -25,11 +25,13 @@ const getAllBooksCount = (req, res) => {
     })
 }
 
-// create Book
-const createBook = (req, res) => {
-    const { title, quantity, language, level, colorPrice, blackAndWhitePrice, actions } = req.body;
 
-    BookModel.createBook( title, quantity, language, level, colorPrice, blackAndWhitePrice, actions).then(result => {
+
+// create Cancelation
+const createCancelation = (req, res) => {
+    const { name, description, day , group, actions} = req.body;
+
+    CancelationModel.createCancelation(name, description, day , group, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -37,12 +39,12 @@ const createBook = (req, res) => {
 }
 
 
-// edit Books
-const editBook = (req, res) => {
-    const {  title, quantity, language, level, colorPrice, blackAndWhitePrice, actions} = req.body;
+// edit Cancelation
+const editCancelation = (req, res) => {
+    const { name, description, day , group, actions} = req.body; 
     const { id } = req.params;
 
-    BookModel.editBook(id,  title, quantity, language, level, colorPrice, blackAndWhitePrice, actions).then(result => {
+    CancelationModel.editCancelation(id,name, description, day , group, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -50,11 +52,11 @@ const editBook = (req, res) => {
 }
 
 
-// delete Book
-const deleteBook = (req, res) => {
+// delete Cancelation
+const deleteCancelation = (req, res) => {
     const { id } = req.params;
 
-    BookModel.deleteBook(id).then(result => {
+    CancelationModel.deleteCancelation(id).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -63,4 +65,4 @@ const deleteBook = (req, res) => {
 
 
 
-module.exports = { getAllBooks, getAllBooksCount, createBook, editBook, deleteBook }
+module.exports = { getAllCancelations, createCancelation, deleteCancelation, getAllCancelationsCount, editCancelation }

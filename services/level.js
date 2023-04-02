@@ -23,13 +23,11 @@ const getAllLevels = (sort, limit, skip, filter) => {
 
             if (levels.length <= 0) {
                 reject("there are no Levels")
-                return
+            }else{
+                  resolve(levels)  
             }
 
-            resolve(levels) 
-
         }).catch(err => { reject(err) })
-
        
 
     })

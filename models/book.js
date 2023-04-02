@@ -12,6 +12,19 @@ const BookSchema = mongoose.Schema({
         required: true,
         trim: true,
     },
+
+    colorPrice: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+
+    blackAndWhitePrice: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+
     language: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

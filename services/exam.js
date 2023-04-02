@@ -10,15 +10,13 @@ const getAllExams = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '
 
         ExamsRquest.find({}, (errFind, Exams) => { 
 
- 
             if (errFind) {
                 reject(errFind)
             } else if (Exams.length <= 0) {
                 reject("there are no Exams")
             } else {
 
-
-                resolve(Exams) 
+                resolve(Exams)
 
             }
 

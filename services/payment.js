@@ -1,5 +1,6 @@
 const PaymentsRquest = require("../models/payment")
 const BillsRquest = require("../models/bill")
+const BooksRquest = require("../models/book")
 
 // get All Payments
 const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
@@ -60,7 +61,7 @@ const getAllPaymentsCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Payment
-const createPayment = (studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions) => {
+const createPayment = (studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, book, actions) => {
 
     return new Promise((resolve, reject) => {
         
@@ -73,9 +74,11 @@ const createPayment = (studentID, paymentMethod, paymentReference, paymentDetail
                     reject("there is no Bill")
                 } else {
 
+            
+
                     if (amount < bill.amount) {
                         bill.amount -= amount
-                        bill.actions.push([{...actions, action: "add"}])                        
+                        bill.actions = [...bill.actions, {...actions, action: "edit"}]                    
                         bill.save()
     
                         // inser a new Payment
@@ -123,19 +126,39 @@ const createPayment = (studentID, paymentMethod, paymentReference, paymentDetail
             })
         }else{
 
-              // inser a new Payment
-              PaymentsRquest.create({
-                studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions: [actions]
-            }, (errInsert, res) => {
-                if (errInsert) {
-                    reject(errInsert)
+
+
+            BooksRquest.findById(book, (errFind, books) => {
+                if (errFind) {
+                    reject(errFind)
+                } else if (!books) {
+                    reject("there are no Books")
                 } else {
-                    resolve(res._id)
+
+                    if(books.quantity > 0){
+
+                        books.quantity -= 1
+                        books.actions = [...books.actions, { ...actions, action: "edit" }]
+                        books.save()
+ 
+                        // inser a new Payment
+                        PaymentsRquest.create({
+                            studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions: [actions]
+                        }, (errInsert, res) => {
+                            if (errInsert) {
+                                reject(errInsert)
+                            } else {
+                                resolve(res._id)
+                            }
+                        })
+
+                    }else{
+                        reject("there are no Books")
+                    }
+
                 }
 
             })
-
-
         }
 
     })
@@ -175,32 +198,32 @@ const deletePayment = (id) => {
     return new Promise((resolve, reject) => {
 
         // // check id
-        // PaymentsRquest.findOne({}, (errFind, payment) => {
+        PaymentsRquest.findOne({}, (errFind, payment) => {
 
-        //     if (errFind) {
-        //         reject(errFind)
-        //     } else if (!payment) {
-        //         reject("id not exist")
-        //     } else {
+            if (errFind) {
+                reject(errFind)
+            } else if (!payment) {
+                reject("id not exist")
+            } else {
 
-        //         //delete
-        //         PaymentsRquest.deleteOne({}
-        //             , (errUpdate, doc) => {
-        //                 if (errUpdate) {
-        //                     reject(errUpdate)
-        //                     return
-        //                 }
+                //delete
+                PaymentsRquest.deleteOne({}
+                    , (errUpdate, doc) => {
+                        if (errUpdate) {
+                            reject(errUpdate)
+                            return
+                        }
 
-        //                 if (doc.deletedCount > 0) {
-        //                     resolve("deleted")
+                        if (doc.deletedCount > 0) {
+                            resolve("deleted")
 
-        //                 } else {
-        //                     reject("something went wrong")
-        //                 }
+                        } else {
+                            reject("something went wrong")
+                        }
 
-        //             }).where("_id").equals(id)
-        //     }//else
-        // }).where("_id").equals(id)
+                    }).where("_id").equals(id)
+            }//else
+        }).where("_id").equals(id)
 
     })
 }

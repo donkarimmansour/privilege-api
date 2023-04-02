@@ -90,9 +90,11 @@ const BookValidator = [
    check("quantity").notEmpty().withMessage("quantity field is required") ,
    check("level").notEmpty().withMessage("level field is required") ,
    check("language").notEmpty().withMessage("language field is required") ,
+   check("colorPrice").notEmpty().withMessage("color Price field is required") ,
+   check("blackAndWhitePrice").notEmpty().withMessage("black And White Price field is required") ,
    check("actions").notEmpty().withMessage("actions field is required")
 ]
-
+ 
 const TeacherValidator = [
    check("firstname").notEmpty().withMessage("firstname field is required") , 
    check("lastname").notEmpty().withMessage("lastname field is required") ,
@@ -154,6 +156,20 @@ const BillValidator = [
    check("actions").notEmpty().withMessage("actions field is required"),
 ]
 
+const CancelationValidator = [
+   check("name").notEmpty().withMessage("name field is required"),
+   check("description").notEmpty().withMessage("description field is required"),
+   check("day").notEmpty().withMessage("day field is required"),
+   check("actions").notEmpty().withMessage("actions field is required"),
+]
+
+const PromotionValidator = [
+   check("name").notEmpty().withMessage("name field is required"),
+   check("description").notEmpty().withMessage("description field is required"),
+   check("language").notEmpty().withMessage("language field is required"),
+   check("session").notEmpty().withMessage("session field is required"),
+   check("actions").notEmpty().withMessage("actions field is required"),
+]
 
  
 
@@ -175,5 +191,7 @@ module.exports = {
    NotificationValidator ,
    ExamValidator ,
    AdminValidator ,
-   BillValidator
+   BillValidator ,
+   CancelationValidator ,
+   PromotionValidator
 }

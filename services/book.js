@@ -1,6 +1,6 @@
 const BooksRquest = require("../models/book")
 
-// get All Books
+// get All Books 
 const getAllBooks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
     return new Promise((resolve, reject) => {
@@ -58,13 +58,13 @@ const getAllBooksCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Book
-const createBook = (title, quantity, language, level, actions) => {
+const createBook = (title, quantity, language, level, colorPrice, blackAndWhitePrice, actions) => {
 
     return new Promise((resolve, reject) => { // check email 
 
                 // inser a new Book
                 BooksRquest.create({
-                    title, quantity, language, level, actions: [actions]
+                    title, quantity, language, level, colorPrice, blackAndWhitePrice, actions: [actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert) 
@@ -81,7 +81,7 @@ const createBook = (title, quantity, language, level, actions) => {
 }
 
 // edit Book
-const editBook = (id, title, quantity, language, level, actions) => {
+const editBook = (id, title, quantity, language, level, colorPrice, blackAndWhitePrice, actions) => {
     return new Promise((resolve, reject) => { // update Book
         // check id
         BooksRquest.findOne({}, (errFind, Book) => {
@@ -94,7 +94,7 @@ const editBook = (id, title, quantity, language, level, actions) => {
 
 
                 BooksRquest.updateOne({}, {
-                    title, quantity, language, level, $push: {actions} , updatedAt: Date.now()
+                    title, quantity, language, level, colorPrice, blackAndWhitePrice, $push: {actions} , updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

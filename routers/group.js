@@ -4,19 +4,19 @@ const router = require("express").Router()
 const { GroupValidator } = require("../middlewares/validators")
 
 // getall Groups
-router.get(ApiEndpoints.Groupes.list , passport.authenticate("admin", {session: false}) ,  GroupControlles.getAllGroups ,  handleError)
+router.get(ApiEndpoints.Groupes.list , passport.authenticate("all", {session: false}) ,  GroupControlles.getAllGroups ,  handleError)
 
 // count Groups
-router.get(ApiEndpoints.Groupes.count , passport.authenticate("admin", {session: false}) ,  GroupControlles.getAllGroupsCount , handleError)
+router.get(ApiEndpoints.Groupes.count , passport.authenticate("adminOrsuperAdmin", {session: false}) ,  GroupControlles.getAllGroupsCount , handleError)
 
 // create Group
-router.post(ApiEndpoints.Groupes.create,passport.authenticate("admin", {session: false})  ,  GroupValidator, HandleValidatorError , GroupControlles.createGroup , handleError)
+router.post(ApiEndpoints.Groupes.create,passport.authenticate("adminOrsuperAdmin", {session: false})  ,  GroupValidator, HandleValidatorError , GroupControlles.createGroup , handleError)
 
 // edit Group
-router.put(ApiEndpoints.Groupes.edit , passport.authenticate("admin", {session: false}) , GroupValidator , idValidator, HandleValidatorError , GroupControlles.editGroup , handleError)
+router.put(ApiEndpoints.Groupes.edit , passport.authenticate("adminOrsuperAdmin", {session: false}) , GroupValidator , idValidator, HandleValidatorError , GroupControlles.editGroup , handleError)
 
 // delete Group
-router.delete(ApiEndpoints.Groupes.delete , passport.authenticate("admin", {session: false}), idValidator , GroupControlles.deleteGroup , handleError)
+router.delete(ApiEndpoints.Groupes.delete , passport.authenticate("superAdmin", {session: false}), idValidator , GroupControlles.deleteGroup , handleError)
 
 
 module.exports = router

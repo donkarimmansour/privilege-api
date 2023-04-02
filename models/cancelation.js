@@ -1,10 +1,11 @@
 const mongoose = require("mongoose")
 
-const CourseSchema = mongoose.Schema({
+const CancelationSchema = mongoose.Schema({
+   
     name: {
         type: String,
         required: true,
-        trim: true, 
+        trim: true,
     },
 
     description: {
@@ -12,16 +13,18 @@ const CourseSchema = mongoose.Schema({
         required: true,
         trim: true,
     },
- 
-    session: [{
-        type: {
-            hours: { type: Number, hours: true },
-            normale: { type: Number, required: true },
-            accelerated: { type: Number, required: true },
-            superAccelerated: { type: Number, required: true },
-        },
+
+    day: {
+        type: String,
         required: true,
-    }],
+        trim: true,
+    },
+    
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref : "group"
+    },
 
     actions: [{
         type: {
@@ -41,10 +44,8 @@ const CourseSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-
-   
 })
 
-const CoursesRquest = mongoose.model("language", CourseSchema)
+const CancelationsRquest = mongoose.model("cancelation", CancelationSchema)
 
-module.exports =  CoursesRquest
+module.exports =  CancelationsRquest

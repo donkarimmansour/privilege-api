@@ -1,35 +1,32 @@
 const TeachersRquest = require("../models/teacher")
 
 // get All Teachers
-const getAllTeachers = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+const getAllTeachers = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
+        
+       TeachersRquest.aggregate([
+            { $lookup: { from: `groups`, localField: `_id`, foreignField: "teacher", as: `group` } },
+            { $addFields: { group: { $first: `$group._id` } } },
+            { $lookup: { from: `students`, localField: `group`, foreignField: "group", as: `studentsCount` } },
+            { $addFields: { studentsCount: { $size: "$studentsCount" } } },
+            { $lookup: { from: `languages`, localField: "language", foreignField: "_id", as: `languages` } },
+            { $addFields: { languages: { $first: "$languages" } } },
+            { $match: filter ? JSON.parse(filter) : {} },
+            { $skip: skip ? parseInt(skip) : 0 },
+            { $limit: limit ? parseInt(limit) : 1000 },
+            { $sort: sort ? JSON.parse(sort) : { "_id": 1 } }
+        ]).exec().then(teachers => {
 
-        const newExpend = expend === "all" ? [{path: 'language', model: 'language'}] : expend
-
-        TeachersRquest.find({}, (errFind, teachers) => {
-
-
-            if (errFind) {
-                reject(errFind)
-            } else if (teachers.length <= 0) {
+            if (teachers.length <= 0) {
                 reject("there are no Teachers")
-            } else {
-
-
-                resolve(teachers)
-
+                return
             }
 
+            resolve(teachers)
 
-        })
-            .populate(newExpend)
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
-
+        
+        }).catch(err => { reject(err) })
 
     })
 }
@@ -216,7 +213,7 @@ const editTeacherImage = (id, image, actions) => {
 
                 //update
                 resolve(teacher.image)
-
+ 
             }
 
         }).where("_id").equals(id)

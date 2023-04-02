@@ -4,25 +4,25 @@ const router = require("express").Router()
 const { AdminValidator , ImageValidator , StudentProfileValidator  } = require("../middlewares/validators")
 
 // getall Admins
-router.get(ApiEndpoints.Admins.list , passport.authenticate("admin", {session: false}) ,  AdminControlles.getAllAdmins ,  handleError)
+router.get(ApiEndpoints.Admins.list , passport.authenticate("adminOrsuperAdmin", {session: false}) ,  AdminControlles.getAllAdmins ,  handleError)
 
 // count Admins
-router.get(ApiEndpoints.Admins.count , passport.authenticate("admin", {session: false}) ,  AdminControlles.getAllAdminsCount , handleError)
+router.get(ApiEndpoints.Admins.count , passport.authenticate("superAdmin", {session: false}) ,  AdminControlles.getAllAdminsCount , handleError)
 
 // create Admin
-router.post(ApiEndpoints.Admins.create,passport.authenticate("admin", {session: false})  ,  AdminValidator, HandleValidatorError , AdminControlles.createAdmin , handleError)
+router.post(ApiEndpoints.Admins.create,passport.authenticate("superAdmin", {session: false})  ,  AdminValidator, HandleValidatorError , AdminControlles.createAdmin , handleError)
 
 // edit Admin
-router.put(ApiEndpoints.Admins.edit , passport.authenticate("admin", {session: false}) , AdminValidator , idValidator, HandleValidatorError , AdminControlles.editAdmin , handleError)
+router.put(ApiEndpoints.Admins.edit , passport.authenticate("superAdmin", {session: false}) , AdminValidator , idValidator, HandleValidatorError , AdminControlles.editAdmin , handleError)
 
 // edit Admin profile
-router.put(ApiEndpoints.Admins.profileEdit , passport.authenticate("admin", {session: false}) , StudentProfileValidator , idValidator, HandleValidatorError , AdminControlles.editAdminProfile , handleError)
+router.put(ApiEndpoints.Admins.profileEdit , passport.authenticate("adminOrsuperAdmin", {session: false}) , StudentProfileValidator , idValidator, HandleValidatorError , AdminControlles.editAdminProfile , handleError)
 
 // edit image
-router.put(ApiEndpoints.Admins.image , passport.authenticate("admin", {session: false}) , ImageValidator , idValidator, HandleValidatorError , AdminControlles.editAdminImage , handleError)
+router.put(ApiEndpoints.Admins.image , passport.authenticate("adminOrsuperAdmin", {session: false}) , ImageValidator , idValidator, HandleValidatorError , AdminControlles.editAdminImage , handleError)
  
 // delete Admin
-router.delete(ApiEndpoints.Admins.delete , passport.authenticate("admin", {session: false}), idValidator , AdminControlles.deleteAdmin , handleError)
+router.delete(ApiEndpoints.Admins.delete , passport.authenticate("superAdmin", {session: false}), idValidator , AdminControlles.deleteAdmin , handleError)
 
 
 module.exports = router

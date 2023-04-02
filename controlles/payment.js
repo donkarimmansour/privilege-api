@@ -27,9 +27,9 @@ const getAllPaymentsCount = (req, res) => {
 
 // create Payment
 const createPayment = (req, res) => {
-    const { studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions} = req.body;
+    const { studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, book, actions} = req.body;
 
-    PaymentModel.createPayment(studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions).then(result => {
+    PaymentModel.createPayment(studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount,  book, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -39,14 +39,14 @@ const createPayment = (req, res) => {
 
 // edit Payments
 const editPayment = (req, res) => {
-    const { studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions} = req.body;
-    const { id } = req.params;
+    // const { studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions} = req.body;
+    // const { id } = req.params;
 
-    PaymentModel.editPayment(id, studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions).then(result => {
-        res.status(codes.ok).json({ err: false, msg: result })
-    }).catch(result => {
-        res.status(codes.badRequest).json({ err: true, msg: result })
-    })
+    // PaymentModel.editPayment(id, studentID, paymentMethod, paymentReference, paymentDetails, feesType, amount, actions).then(result => {
+    //     res.status(codes.ok).json({ err: false, msg: result })
+    // }).catch(result => {
+    //     res.status(codes.badRequest).json({ err: true, msg: result })
+    // })
 }
 
 

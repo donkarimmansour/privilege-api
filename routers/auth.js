@@ -8,7 +8,7 @@ const {SignInValidator , forgotPasswordValidator} = require("../middlewares/vali
 router.post(ApiEndpoints.Auth.signin, SignInValidator ,  HandleValidatorError , AuthControlles.SignIn)
 
 // get me
-router.get(ApiEndpoints.Auth.me , passport.authenticate("admin", {session: false}) ,  AuthControlles.getMe ,  handleError)
+router.get(ApiEndpoints.Auth.me , passport.authenticate("all", {session: false}) ,  AuthControlles.getMe ,  handleError)
 
 // forgot password
 router.put(ApiEndpoints.Auth.forgot , forgotPasswordValidator,  HandleValidatorError , AuthControlles.forgotPassword)

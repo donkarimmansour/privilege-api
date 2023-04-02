@@ -1,10 +1,11 @@
 const mongoose = require("mongoose")
 
-const CourseSchema = mongoose.Schema({
+const PromotionSchema = mongoose.Schema({
+   
     name: {
         type: String,
         required: true,
-        trim: true, 
+        trim: true,
     },
 
     description: {
@@ -12,16 +13,22 @@ const CourseSchema = mongoose.Schema({
         required: true,
         trim: true,
     },
- 
-    session: [{
+
+    language: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref : "language"
+    },
+
+    session: {
         type: {
-            hours: { type: Number, hours: true },
-            normale: { type: Number, required: true },
-            accelerated: { type: Number, required: true },
-            superAccelerated: { type: Number, required: true },
+            hours: { type: Number,  hours: true},
+            normale: { type: Number,  required: true},
+            accelerated: { type: Number,  required: true},
+            superAccelerated: { type: Number,  required: true},
         },
         required: true,
-    }],
+    },
 
     actions: [{
         type: {
@@ -41,10 +48,8 @@ const CourseSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-
-   
 })
 
-const CoursesRquest = mongoose.model("language", CourseSchema)
+const PromotionsRquest = mongoose.model("promotion", PromotionSchema)
 
-module.exports =  CoursesRquest
+module.exports =  PromotionsRquest

@@ -34,7 +34,7 @@ const SignIn = (email, password , role) => {
                 }else{
                     
                     const TOKEN = JWt.sign({
-                        user : {...user._doc , role : role } 
+                      ...user._doc , role : user._doc?.role || role 
                     }, process.env.KEY, {expiresIn: "7d"})
 
                     resolve({TOKEN})

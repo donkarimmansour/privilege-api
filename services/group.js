@@ -12,10 +12,10 @@ const getAllGroups = (sort, limit, skip, filter) => {
             { $lookup: { from: `languages`, localField: "language", foreignField: "_id", as: `languages` } },
             { $lookup: { from: `departments`, localField: `department`, foreignField: "_id", as: `departments` } },
             { $lookup: { from: `teachers`, localField: `teacher`, foreignField: "_id", as: `teachers` } },
-            {
+            { 
                 $project: {
                     studentsCount: 1, name: 1, createdAt: 1, updatedAt: 1, actions: 1,option: 1, session: 1, calindar: 1,
-                    levels: { $first: "$levels" }, languages: { $first: "$levels" }, departments: { $first: "$departments" }, teachers: { $first: "$teachers" },
+                    levels: { $first: "$levels" }, languages: { $first: "$languages" }, departments: { $first: "$departments" }, teachers: { $first: "$teachers" },
                     level: { $toString: "$level" }, language: { $toString: "$language" }, department: { $toString: "$department" },
                     teacher: { $toString: "$teacher" }, _id: { $toString: "$_id" }
                 }

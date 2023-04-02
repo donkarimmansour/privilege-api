@@ -16,6 +16,8 @@ const Exam = require("../routers/exam")
 const Smtp = require("../routers/smtp")
 const Admin = require("../routers/admin")
 const Bill = require("../routers/bill")
+const Cancelation = require("../routers/cancelation")
+const Promotion = require("../routers/promotion")
 
 // require("../socket/socket")
 
@@ -34,6 +36,8 @@ app.use(ApiEndpoints.Exam.route, Exam)
 app.use(ApiEndpoints.Smtp.route, Smtp)
 app.use(ApiEndpoints.Admins.route, Admin)
 app.use(ApiEndpoints.Bills.route, Bill)
+app.use(ApiEndpoints.Cancelations.route, Cancelation)
+app.use(ApiEndpoints.Promotions.route, Promotion)
 
 //cron job
 require("../services/cron") 
