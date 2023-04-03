@@ -1,4 +1,4 @@
-const SmtpModel = require("../services/Smtp")
+const SmtpModel = require("../services/smtp")
 const codes = require("../common/codes")
 
  

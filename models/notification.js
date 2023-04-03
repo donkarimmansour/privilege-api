@@ -12,7 +12,7 @@ const NotificationSchema = mongoose.Schema({
     },
 
     seen: {
-        type: String,
+        type: Boolean,
         required: false,
         default: false,
     },
