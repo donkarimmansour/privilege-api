@@ -47,6 +47,6 @@ app.use((req, res, next) => {
 })
 
 
-app.listen(process.env.PORT || 3000 , () => {
+app.listen(process.env.PORT || 3001 , () => {
     console.log("server start")
 })

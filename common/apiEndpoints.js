@@ -4,10 +4,6 @@ const Host = {
   FRONTEND: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "https://privilege23.netlify.app",
 }
 
-console.log(process.env.NODE_ENV)
-//|| 'development'
-//
-
 const ApiEndpoints = {  
 
   Auth: { 

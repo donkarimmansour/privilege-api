@@ -5,10 +5,13 @@ const codes = require("../common/codes")
 // get All Groups
 const getAllGroups = (req, res) => {
     const { sort, limit, skip, filter } = req.query;
+    console.log("result");
 
     GroupModel.getAllGroups(sort, limit, skip, filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
+        console.log(result)
+
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
