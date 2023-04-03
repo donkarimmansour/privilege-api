@@ -1,4 +1,4 @@
-const SmtpRquest = require("../models/Smtp")
+const SmtpRquest = require("../models/smtp")
 
 // get Smtp
 const getSmtp = () => {
