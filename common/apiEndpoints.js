@@ -1,8 +1,9 @@
 const Host = {
-  ROOT: "http://localhost:3001",
+ // ROOT: "http://localhost:3001",
+  ROOT: "https://privilege.onrender.com",
   PREFIX: "/v1/api",
   //FRONTEND: "http://localhost:3000",
-  FRONTEND: "https://cheap-shop.net",
+  FRONTEND: "https://privilege23.netlify.app",
 }
   
 const ApiEndpoints = {  
