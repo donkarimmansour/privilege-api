@@ -1,4 +1,4 @@
-const BillModel = require("../services/Bill")
+const BillModel = require("../services/bill")
 const codes = require("../common/codes")
 
   
