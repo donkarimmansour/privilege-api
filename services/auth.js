@@ -4,6 +4,7 @@ const JWt = require("jsonwebtoken")
 const StudentRquest = require("../models/student")
 const TeachersRquest = require("../models/teacher")
 const AdminsRquest = require("../models/admin")
+const SmtpRquest = require("../models/smtp")
 
 
 // SignIn
@@ -77,32 +78,43 @@ const forgotPassword = (email , role) => {
                 //update
                    const password = (Math.random() + 1).toString(36).substring(4);
 
-                     //current pasword => llwl1j4s
+                SmtpRquest.findOne({}, (errFind, smtp) => {
 
-                     Rquest.updateOne({}, {
-                        password: new Rquest().hashPassword(password),
-                        updatedAt: Date.now()
-                    }, (errUpdate, doc) => {
-                        if (errUpdate){ 
-                            reject(errUpdate) 
-                        
-                       }else if (doc.modifiedCount > 0) {
+                    if (errFind) {
+                        reject(errFind)
+                    } else if (!smtp || smtp.host.length < 5) {
+                        reject("there is no Smtp")
+                    } else {
 
-                           //get confim Email Msg
-                           const html = messages.resetPasswordMsg(password)
+                        Rquest.updateOne({}, {
+                            password: new Rquest().hashPassword(password),
+                            updatedAt: Date.now()
+                        }, (errUpdate, doc) => {
+                            if (errUpdate){ 
+                                reject(errUpdate) 
+                            
+                           }else if (doc.modifiedCount > 0) {
+    
+                               //get confim Email Msg
+                               const html = messages.resetPasswordMsg(password)
+    
+                               // send Email Verification
+                               mailer.sendMAIL(email, "new Password", html, smtp)
+                               .then((succ) => resolve("new password sent"))
+                               .catch(error => reject(error))
+                
+                            } else {
+                                reject("something went wrong")
+                
+                            }
+    
+                
+                        }).or([{ email }, { username : email }])
 
-                           // send Email Verification
-                           mailer.sendMAIL(email, "new Password", html)
-                           .then((succ) => resolve("new password sent"))
-                           .catch(error => reject(error))
-            
-                        } else {
-                            reject("something went wrong")
-            
-                        }
+                    }
 
-            
-                    }).or([{ email }, { username : email }])
+                })
+              
                 }
 
 
