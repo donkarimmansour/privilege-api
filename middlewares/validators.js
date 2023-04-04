@@ -33,7 +33,7 @@ const StudentProfileValidator= [
 
  const ImageValidator= [
    check("image").notEmpty().withMessage("image field is required") ,
-   check("actions").notEmpty().withMessage("actions field is required")
+   //check("actions").notEmpty().withMessage("actions field is required")
 ]
 
 
