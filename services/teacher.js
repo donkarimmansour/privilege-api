@@ -11,7 +11,7 @@ const getAllTeachers = (sort, limit, skip, filter) => {
             { $lookup: { from: `students`, localField: `group`, foreignField: "group", as: `studentsCount` } },
             { $addFields: { studentsCount: { $size: "$studentsCount" } } },
             { $lookup: { from: `languages`, localField: "language", foreignField: "_id", as: `languages` } },
-            { $addFields: { languages: { $first: "$languages" } } },
+            { $addFields: { languages: { $first: "$languages" }, _id: {$toString: "$_id"} , language: {$toString: "$language"} , cours: { $first: "$languages.name" } } },
             { $match: filter ? JSON.parse(filter) : {} },
             { $skip: skip ? parseInt(skip) : 0 },
             { $limit: limit ? parseInt(limit) : 1000 },
