@@ -31,7 +31,7 @@ const StudentProfileValidator= [
    check("actions").notEmpty().withMessage("actions field is required")
 ]
 
- const ImageValidator= [
+const ImageValidator= [
    check("image").notEmpty().withMessage("image field is required") ,
    //check("actions").notEmpty().withMessage("actions field is required")
 ]
@@ -54,8 +54,9 @@ const SignInValidator = [
 
 const LanguageValidator = [
    check("name").notEmpty().withMessage("name field is required") ,
-   check("description").notEmpty().withMessage("description field is required"),
+  // check("description").notEmpty().withMessage("description field is required"),
    check("session").notEmpty().withMessage("session field is required"),
+   check("registerFees").notEmpty().withMessage("register Fees field is required"),
    check("actions").notEmpty().withMessage("actions field is required")
 ]
  
@@ -158,16 +159,13 @@ const BillValidator = [
 
 const CancelationValidator = [
    check("name").notEmpty().withMessage("name field is required"),
-   check("description").notEmpty().withMessage("description field is required"),
+   //check("description").notEmpty().withMessage("description field is required"),
    check("day").notEmpty().withMessage("day field is required"),
    check("actions").notEmpty().withMessage("actions field is required"),
 ]
 
-const PromotionValidator = [
-   check("name").notEmpty().withMessage("name field is required"),
-   check("description").notEmpty().withMessage("description field is required"),
-   check("language").notEmpty().withMessage("language field is required"),
-   check("session").notEmpty().withMessage("session field is required"),
+const BlockValidator = [
+   check("studentID").notEmpty().withMessage("name field is required"),
    check("actions").notEmpty().withMessage("actions field is required"),
 ]
 
@@ -193,5 +191,5 @@ module.exports = {
    AdminValidator ,
    BillValidator ,
    CancelationValidator ,
-   PromotionValidator
+   BlockValidator
 }

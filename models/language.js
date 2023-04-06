@@ -9,16 +9,20 @@ const CourseSchema = mongoose.Schema({
 
     description: {
         type: String,
-        required: true,
         trim: true,
     },
  
+    registerFees: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+
     session: [{
         type: {
-            hours: { type: Number, hours: true },
-            normale: { type: Number, required: true },
-            accelerated: { type: Number, required: true },
-            superAccelerated: { type: Number, required: true },
+            ttype: { type: String, required: true },
+            hours: { type: Number, required: true },
+            price: { type: Number, required: true }
         },
         required: true,
     }],

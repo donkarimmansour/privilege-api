@@ -28,9 +28,9 @@ const getAllLanguagesCount = (req, res) => {
 
 // create Language
 const createLanguage = (req, res) => {
-    const { name , description , session, actions} = req.body;
+    const { name , description , session, registerFees, actions} = req.body;
 
-    LanguageModel.createLanguage( name , description , session, actions).then(result => {
+    LanguageModel.createLanguage( name , description , session, registerFees, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })
@@ -40,10 +40,10 @@ const createLanguage = (req, res) => {
 
 // edit Languages
 const editLanguage = (req, res) => {
-    const {  name , description , session, actions} = req.body;
+    const {  name , description , session, registerFees, actions} = req.body;
     const { id } = req.params;
 
-    LanguageModel.editLanguage(id,  name , description , session, actions).then(result => {
+    LanguageModel.editLanguage(id,  name , description , session,registerFees, actions).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
     }).catch(result => {
         res.status(codes.badRequest).json({ err: true, msg: result })

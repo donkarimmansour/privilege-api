@@ -6,11 +6,10 @@ const CancelationSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-    },
+    }, 
 
     description: {
         type: String,
-        required: true,
         trim: true,
     },
 

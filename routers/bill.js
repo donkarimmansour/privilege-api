@@ -16,7 +16,7 @@ router.get(ApiEndpoints.Bills.count , passport.authenticate("adminOrsuperAdmin",
 // router.post(ApiEndpoints.Bills.edit,passport.authenticate("adminOrsuperAdmin", {session: false})  ,  BillValidator, idValidator, HandleValidatorError , BillControlles.createBill , handleError)
 
 // // delete Bill
-// router.delete(ApiEndpoints.Bills.delete , passport.authenticate("superAdmin", {session: false}), idValidator , BillControlles.deleteBill , handleError)
+router.delete(ApiEndpoints.Bills.delete , passport.authenticate("superAdmin", {session: false}), idValidator , BillControlles.deleteBill , handleError)
 
 
 module.exports = router

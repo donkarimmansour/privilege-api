@@ -1,21 +1,21 @@
-const PromotionsRquest = require("../models/promotion")
+const BlocksRquest = require("../models/blocks")
 
-// get All Promotions
-const getAllPromotions = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
+// get All Blocks
+const getAllBlocks = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
 
     return new Promise((resolve, reject) => {
 
-        PromotionsRquest.find({}, (errFind, promotions) => {
+        BlocksRquest.find({}, (errFind, blocks) => {
 
 
             if (errFind) {
                 reject(errFind)
-            } else if (promotions.length <= 0) {
-                reject("there are no Promotions")
+            } else if (blocks.length <= 0) {
+                reject("there are no Blocks")
             } else {
 
 
-                resolve(promotions)
+                resolve(blocks)
 
             }
 
@@ -32,21 +32,21 @@ const getAllPromotions = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filte
 }
 
 
-// get All Promotion Count
-const getAllPromotionsCount = (filter = '{"username" : { "$ne": "x" }}') => {
+// get All Block Count
+const getAllBlocksCount = (filter = '{"username" : { "$ne": "x" }}') => {
 
     return new Promise((resolve, reject) => {
 
-        PromotionsRquest.find({}, (errFind, Promotions) => {
+        BlocksRquest.find({}, (errFind, blocks) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (Promotions.length <= 0) {
-                reject("there are no Promotions")
+            } else if (blocks.length <= 0) {
+                reject("there are no Blocks")
             } else {
 
 
-                resolve(Promotions)
+                resolve(blocks)
 
             }
 
@@ -56,13 +56,13 @@ const getAllPromotionsCount = (filter = '{"username" : { "$ne": "x" }}') => {
     })
 }
 
-// create Promotion
-const createPromotion = (name, description , language, session, actions) => {
+// create Block
+const createBlock = (studentID, description, actions) => {
 
     return new Promise((resolve, reject) => {
 
-                // insert Promotions
-                PromotionsRquest.create({ name, description , language, session, actions: [actions] }, (errInsert, res) => {
+                // insert Blocks
+                BlocksRquest.create({ studentID, description, actions: [actions] }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
                     } else {
@@ -76,20 +76,20 @@ const createPromotion = (name, description , language, session, actions) => {
 }
 
 
-// edit Promotion
-const editPromotion = (id, name, description , language, session, actions) => {
-    return new Promise((resolve, reject) => { // update Promotion
+// edit Block
+const editBlock = (id, studentID, description, actions) => {
+    return new Promise((resolve, reject) => { // update Block
         // check id
-        PromotionsRquest.findOne({}, (errFind, promotion) => {
+        BlocksRquest.findOne({}, (errFind, Block) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!promotion) {
+            } else if (!Block) {
                 reject("id not exist")
             }else {
 
-                PromotionsRquest.updateOne({}, {
-                    name, description , language, session , $push: {actions},
+                BlocksRquest.updateOne({}, {
+                    studentID, description , $push: {actions},
                     updatedAt: Date.now()
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
@@ -118,22 +118,22 @@ const editPromotion = (id, name, description , language, session, actions) => {
 }
 
 
-// delete Promotion
-const deletePromotion = (id) => {
+// delete Block
+const deleteBlock = (id) => {
 
     return new Promise((resolve, reject) => {
 
         // check id
-        PromotionsRquest.findOne({}, (errFind, promotions) => {
+        BlocksRquest.findOne({}, (errFind, blocks) => {
 
             if (errFind) {
                 reject(errFind)
-            } else if (!promotions) {
+            } else if (!blocks) {
                 reject("id not exist")
             } else {
 
                 //delete
-                PromotionsRquest.deleteOne({}, (errUpdate, doc) => {
+                BlocksRquest.deleteOne({}, (errUpdate, doc) => {
 
                         if (errUpdate) {
                             reject(errUpdate)
@@ -152,4 +152,4 @@ const deletePromotion = (id) => {
 }
 
 
-module.exports = { getAllPromotions, createPromotion, deletePromotion, getAllPromotionsCount,editPromotion }
+module.exports = { getAllBlocks, createBlock, deleteBlock, getAllBlocksCount,editBlock }

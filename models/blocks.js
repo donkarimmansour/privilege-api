@@ -1,19 +1,18 @@
 const mongoose = require("mongoose")
-
-const BillSchema = mongoose.Schema({
+ 
+const BlockSchema = mongoose.Schema({
    
     studentID: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref : "student",
-    }, 
-
-    amount: {
-        type: Number,
-        required: true,
+    },
+    
+    description: {
+        type: String,
         trim: true,
     },
-   
+    
     actions: [{
         type: {
             fullName: { type: String, required: true },
@@ -23,7 +22,7 @@ const BillSchema = mongoose.Schema({
         },
         required: true,
     }],
-    
+
     createdAt: {
         type: Date,
         default: Date.now()
@@ -34,6 +33,6 @@ const BillSchema = mongoose.Schema({
     },
 })
 
-const BillsRquest = mongoose.model("bill", BillSchema)
+const BlocksRquest = mongoose.model("block", BlockSchema)
 
-module.exports =  BillsRquest
+module.exports =  BlocksRquest

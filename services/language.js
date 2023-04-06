@@ -13,7 +13,7 @@ const getAllLanguages = (sort, limit, skip, filter) => {
                 {
                     $project: {
                         studentsCount: 1, teachersCount: 1, name: 1, description: 1, image: 1, createdAt: 1, updatedAt: 1,
-                        session: 1, actions: 1, _id: { $toString: "$_id" }
+                        session: 1, actions: 1, _id: { $toString: "$_id" }, registerFees: 1
                     }
                 },
                 { $match: filter ? JSON.parse(filter) : {} },
@@ -62,12 +62,12 @@ const getAllLanguagesCount = (filter = '{"username" : { "$ne": "x" }}') => {
 }
 
 // create Language
-const createLanguage = (name , description , session, actions) => {
+const createLanguage = (name , description , session, registerFees, actions) => {
 
     return new Promise((resolve, reject) => { // check email
                 // inser a new Language
                 LanguagesRquest.create({
-                    name , description , session, actions: [actions]
+                    name , description , session, registerFees, actions: [actions]
                 }, (errInsert, res) => {
                     if (errInsert) {
                         reject(errInsert)
@@ -83,7 +83,7 @@ const createLanguage = (name , description , session, actions) => {
 }
 
 // edit Language
-const editLanguage = (id, name , description , session, actions) => {
+const editLanguage = (id, name , description , session, registerFees, actions) => {
     return new Promise((resolve, reject) => { // update Language
         // check id
         LanguagesRquest.findOne({}, (errFind, language) => {
@@ -96,7 +96,7 @@ const editLanguage = (id, name , description , session, actions) => {
 
 
                 LanguagesRquest.updateOne({}, {
-                    name , description , session, $push: { actions } , updatedAt: Date.now() 
+                    name , description , session, registerFees, $push: { actions } , updatedAt: Date.now() 
                 }, (errUpdate, doc) => {
                     if (errUpdate) {
                         reject(errUpdate)

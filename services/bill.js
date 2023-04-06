@@ -119,29 +119,29 @@ const deleteBill = (id) => {
     return new Promise((resolve, reject) => {
 
         // // check id
-        // BillsRquest.findOne({}, (errFind, bill) => {
+        BillsRquest.findOne({}, (errFind, bill) => {
 
-        //     if (errFind) {
-        //         reject(errFind)
-        //     } else if (!bill) {
-        //         reject("id not exist")
-        //     } else {
+            if (errFind) {
+                reject(errFind)
+            } else if (!bill) {
+                reject("id not exist")
+            } else {
 
-        //         //delete
-        //         BillsRquest.deleteOne({}, (errUpdate, doc) => {
+                //delete
+                BillsRquest.deleteOne({}, (errUpdate, doc) => {
 
-        //                 if (errUpdate) {
-        //                     reject(errUpdate)
-        //                 }else if (doc.deletedCount > 0) {
-        //                     resolve("deleted")
+                        if (errUpdate) {
+                            reject(errUpdate)
+                        }else if (doc.deletedCount > 0) {
+                            resolve("deleted")
 
-        //                 } else {
-        //                     reject("something went wrong")
-        //                 }
+                        } else {
+                            reject("something went wrong")
+                        }
 
-        //             }).where("_id").equals(id)
-        //     }//else
-        // }).where("_id").equals(id)
+                    }).where("_id").equals(id)
+            }//else
+        }).where("_id").equals(id)
 
     })
 }
