@@ -1,5 +1,6 @@
 const StudentsRquest = require("../models/student")
 const BillsRquest = require("../models/bill")
+const ArchivedStudentsRquest = require("../models/archivedStudent")
 
 // get All Students
 const getAllStudents = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
@@ -84,6 +85,10 @@ const createStudent = (tested , firstname, lastname, gender, phone, birthday, us
 
                     }else{
 
+                        if (res._doc.group && res._doc.level) {
+                            ArchivedStudentsRquest.create({...res._doc, actions: [actions]}, (errInsert, _res) => {})
+                        }
+
                         BillsRquest.create({
                             amount, studentID: res._id, actions: [actions]
                         }, (errInsert, _res) => {
@@ -128,13 +133,13 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
 
 
                 //update
-                const newpassword = (password == "") ? student.password : student.hashPassword(password)
+                const newpassword = (password == "") ? student.password : student.hashPassword(password) 
 
 
+                const insertData = {tested ,firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, group, level, hours, option, session, cin,isAccountActivated}
+               
                 StudentsRquest.updateOne({}, {
-                    password: newpassword,tested , $push: {actions},
-                    firstname, lastname, gender, phone, birthday, username, email, facebook, twitter, linkedin, language, group, level, hours, option, session, cin,
-                    updatedAt: Date.now() , isAccountActivated
+                    ...insertData, $push: { actions }, password: newpassword, updatedAt: Date.now()
                 }, (errUpdate, doc) => {
 
                     if (errUpdate) {
@@ -143,6 +148,12 @@ const editStudent = (id,tested , firstname, lastname, gender, phone, birthday, u
                     }else{
 
                         if (doc.modifiedCount > 0) {
+
+                            if (group && level) {
+                                ArchivedStudentsRquest.create({...insertData, actions: [actions]}, (errInsert, _res) => { 
+                                    console.log(errInsert);
+                                })
+                            }
 
                             BillsRquest.findOne({studentID: id}, (errFind, bill) => {
                                 if (errFind) {
@@ -278,15 +289,17 @@ const deleteStudent = (id) => {
                 reject("id not exist")
             } else {
 
-                //delete
+                if (student.group && student.level) {
+                   delete student._doc._id
+                    ArchivedStudentsRquest.create({...student._doc}, (errInsert, _res) => {  })
+                }
+
+                // //delete
                 StudentsRquest.deleteOne({}
                     , (errUpdate, doc) => {
                         if (errUpdate) {
                             reject(errUpdate)
-                            return
-                        }
-
-                        if (doc.deletedCount > 0) {
+                        }else if (doc.deletedCount > 0) {
                             resolve("deleted")
 
                         } else {

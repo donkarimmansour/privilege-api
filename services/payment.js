@@ -3,34 +3,29 @@ const BillsRquest = require("../models/bill")
 const BooksRquest = require("../models/book")
 
 // get All Payments
-const getAllPayments = (sort = '{"updatedAt" : 1}', limit = 0, skip = 0, filter = '{"username" : { "$ne": "x" }}', select = null, expend = null) => {
-
-    const newExpend = expend === "all" ? [{ path: 'studentID', model: 'student', populate: { path: 'language', model: 'language' } }] : expend
+const getAllPayments = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
 
-        PaymentsRquest.find({}, (errFind, payments) => {
+        console.log(JSON.parse(filter))
 
+        PaymentsRquest.aggregate([
+            { $lookup: { from: `students`, localField: "studentID", foreignField: "_id", as: `studentID` } },
+            { $addFields: { studentID: { $first: "$studentID" }, lastname: {$first: "$studentID.lastname"}, firstname: {$first: "$studentID.firstname"} } },
+            { $match: filter ? JSON.parse(filter) : {} },
+            { $skip: skip ? parseInt(skip) : 0 },
+            { $limit: limit ? parseInt(limit) : 1000 },
+            { $sort: sort ? JSON.parse(sort) : { "_id": 1 } }
+        ]).exec().then(payments => {
 
-            if (errFind) {
-                reject(errFind)
-            } else if (payments.length <= 0) {
+            if (payments.length <= 0) {
                 reject("there are no Payments")
-            } else {
-
-
-                resolve(payments)
-
+                return
             }
 
-
-        })
-            .populate(newExpend)
-            .select(select)
-            .sort(JSON.parse(sort))
-            .limit(parseInt(limit))
-            .skip(parseInt(skip))
-            .setQuery({ ...JSON.parse(filter) })
+            resolve(payments)
+        
+        }).catch(err => { reject(err) })
 
 
     })
@@ -207,14 +202,11 @@ const deletePayment = (id) => {
             } else {
 
                 //delete
-                PaymentsRquest.deleteOne({}
-                    , (errUpdate, doc) => {
+                PaymentsRquest.updateOne({},{status: "archived"}, (errUpdate, doc) => {
                         if (errUpdate) {
                             reject(errUpdate)
-                            return
-                        }
-
-                        if (doc.deletedCount > 0) {
+                            
+                        }else if (doc.modifiedCount > 0) {
                             resolve("deleted")
 
                         } else {

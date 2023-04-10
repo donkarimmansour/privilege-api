@@ -66,6 +66,14 @@ const PaymentSchema = mongoose.Schema({
         required: true,
     }],
 
+    
+    status: {
+        type: String,
+        required: true,
+        trim: true,
+        default: "active",
+    },
+    
     createdAt: {
         type: Date,
         default: Date.now()

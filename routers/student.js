@@ -24,5 +24,11 @@ router.put(ApiEndpoints.Students.image , passport.authenticate("studentOradminOr
 // delete student
 router.delete(ApiEndpoints.Students.delete , passport.authenticate("superAdmin", {session: false}), idValidator , StudentControlles.deleteStudent , handleError)
 
+// getall archived students
+router.get(ApiEndpoints.Students.archivedList , passport.authenticate("adminOrsuperAdmin", {session: false}) ,  StudentControlles.getAllArchivedStudents ,  handleError)
+
+// count archived students
+router.get(ApiEndpoints.Students.archivedCount , passport.authenticate("adminOrsuperAdmin", {session: false}) ,  StudentControlles.getAllArchivedStudentsCount , handleError)
+
 
 module.exports = router

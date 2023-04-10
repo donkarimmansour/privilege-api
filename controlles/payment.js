@@ -4,12 +4,11 @@ const codes = require("../common/codes")
  
 // get All Payments
 const getAllPayments = (req, res) => {
-    const { sort, limit, skip, filter, select, expend } = req.query;
+    const { sort, limit, skip, filter } = req.query;
 
-    PaymentModel.getAllPayments(sort, limit, skip, filter, select, expend).then(result => {
+    PaymentModel.getAllPayments(sort, limit, skip, filter).then(result => {
         res.status(codes.ok).json({ err: false, msg: result })
-    }).catch(result => {
-        res.status(codes.badRequest).json({ err: true, msg: result })
+    }).catch(result => { res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
 

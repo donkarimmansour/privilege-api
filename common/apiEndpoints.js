@@ -31,7 +31,9 @@ const ApiEndpoints = {
     edit: `/edit/:id`, 
     profileEdit: `/profileEdit/:id`, 
     delete: `/delete/:id`, 
+    archivedCount: `/archivedCount`, 
     count: `/count`, 
+    archivedList: `/archivedList`, 
     list: `/list`, 
     image: `/image/:id`
     },

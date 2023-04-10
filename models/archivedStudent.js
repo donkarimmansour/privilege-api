@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
-const bcrypt = require("bcryptjs")
 
-const TeacherSchema = mongoose.Schema({
+const ArchivedStudentSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -9,7 +8,6 @@ const TeacherSchema = mongoose.Schema({
     },
 
     firstname: {
-        type: String,
         type: String,
         required: true,
         trim: true,
@@ -22,19 +20,13 @@ const TeacherSchema = mongoose.Schema({
     email: { 
         type: String,
         required: true,
-        trim: true,
-        unique : true
+        trim: true
     },
 
     phone: {
         type: String,
         required: true,
         trim: true, 
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true,
     },
 
     birthday: {
@@ -48,7 +40,7 @@ const TeacherSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref : "file",
-        default : "64138ac11da720d3bad0847d"
+        default : "64138abb1da720d3bad0847a"
     },
 
     gender: { 
@@ -61,25 +53,49 @@ const TeacherSchema = mongoose.Schema({
         required: true,
         enum : ["no" , "yes"] ,
     } ,
+    
     language: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref : "language"
     },
-    
-    website: {
-        type: String,
-        required: false,
-        trim: true,
-    },
 
-    note: {
-        type: String,
+    group: {
+        type: mongoose.Schema.Types.ObjectId,
         required: false,
-        trim: true,
+        ref : "group"
     },
 
 
+    level: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref : "level"
+    },
+
+    hours: {
+        type: Number,
+        required: true,
+    },
+
+    option: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+
+    session: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+
+    cin: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+  
     facebook: {
         type: String,
         required: false,
@@ -96,6 +112,13 @@ const TeacherSchema = mongoose.Schema({
         trim: true,
     },
 
+
+    tested: {
+        type: String,
+        required: true,
+        enum : ["no" , "yes"] 
+    } ,
+
     actions: [{
         type: {
             fullName: { type: String, required: true },
@@ -105,32 +128,15 @@ const TeacherSchema = mongoose.Schema({
         },
         required: true,
     }],
+
    
     createdAt: {
         type: Date,
         default: Date.now()
     },
-    updatedAt: {
-        type: Date,
-        default: Date.now()
-    },
-
    
 })
 
+const ArchivedStudentsRquest = mongoose.model("archivedStudent", ArchivedStudentSchema)
 
-// hash Password
-TeacherSchema.methods.hashPassword = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-}
-
-// compare Password
-TeacherSchema.methods.comparePassword = function (password) {
-    return bcrypt.compareSync(password, this.password)
-}
-
-
-
-const TeachersRquest = mongoose.model("teacher", TeacherSchema)
-
-module.exports =  TeachersRquest
+module.exports =  ArchivedStudentsRquest

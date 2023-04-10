@@ -128,11 +128,11 @@ const deleteBill = (id) => {
             } else {
 
                 //delete
-                BillsRquest.deleteOne({}, (errUpdate, doc) => {
+                BillsRquest.updateOne({} ,{status: "archived"}, (errUpdate, doc) => {
 
                         if (errUpdate) {
                             reject(errUpdate)
-                        }else if (doc.deletedCount > 0) {
+                        }else if (doc.modifiedCount > 0) {
                             resolve("deleted")
 
                         } else {

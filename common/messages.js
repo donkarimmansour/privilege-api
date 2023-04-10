@@ -11,4 +11,5 @@ const resetPasswordMsg = (newPass) => {
 }
 
 
+
 module.exports = { resetPasswordMsg }

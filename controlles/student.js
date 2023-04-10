@@ -1,4 +1,5 @@
 const StudentModel = require("../services/student")
+const ArchivedStudentModel = require("../services/archivedStudent")
 const codes = require("../common/codes")
 
 
@@ -24,6 +25,31 @@ const getAllStudentsCount = (req, res) => {
         res.status(codes.badRequest).json({ err: true, msg: result })
     })
 }
+
+
+// get All Archived Students
+const getAllArchivedStudents = (req, res) => {
+    const { sort, limit, skip, filter, select, expend } = req.query;
+
+    ArchivedStudentModel.getAllArchivedStudents(sort, limit, skip, filter, select, expend).then(result => {
+        res.status(codes.ok).json({ err: false, msg: result })
+    }).catch(result => {
+        res.status(codes.badRequest).json({ err: true, msg: result })
+    })
+}
+
+// get All Archived Students Count
+const getAllArchivedStudentsCount = (req, res) => {
+    const { filter } = req.query;
+
+    ArchivedStudentModel.getAllArchivedStudentsCount(filter).then(result => {
+        res.status(codes.ok).json({ err: false, msg: result })
+    }).catch(result => {
+        console.log(result);
+        res.status(codes.badRequest).json({ err: true, msg: result })
+    })
+}
+
 
 // create Student
 const createStudent = (req, res) => {
@@ -87,4 +113,4 @@ const deleteStudent = (req, res) => {
 
 
 
-module.exports = { getAllStudents, getAllStudentsCount, createStudent, editStudent, editStudentProfile, editStudentImage, deleteStudent }
+module.exports = { getAllStudents, getAllStudentsCount, createStudent, editStudent, editStudentProfile, editStudentImage, deleteStudent, getAllArchivedStudents, getAllArchivedStudentsCount }
