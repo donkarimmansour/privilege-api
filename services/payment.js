@@ -2,17 +2,36 @@ const PaymentsRquest = require("../models/payment")
 const BillsRquest = require("../models/bill")
 const BooksRquest = require("../models/book")
 
+const checkDateFilter = (filter) => {
+    if (!filter) {
+        return {}
+    } else {
+        let newFilter = JSON.parse(filter)
+
+        console.log(newFilter)
+
+        if(newFilter.updatedAt){
+            if (newFilter.updatedAt["$gte"]) {
+                newFilter.updatedAt["$gte"] = new Date(newFilter.updatedAt["$gte"])
+            } else if (newFilter.updatedAt["$lte"]) {
+                newFilter.updatedAt["$lte"] = new Date(newFilter.updatedAt["$lte"])
+            }
+        }
+
+        return newFilter
+    }
+}
+
+
 // get All Payments
 const getAllPayments = (sort, limit, skip, filter) => {
 
     return new Promise((resolve, reject) => {
-
-        console.log(JSON.parse(filter))
-
+        
         PaymentsRquest.aggregate([
             { $lookup: { from: `students`, localField: "studentID", foreignField: "_id", as: `studentID` } },
-            { $addFields: { studentID: { $first: "$studentID" }, lastname: {$first: "$studentID.lastname"}, firstname: {$first: "$studentID.firstname"} } },
-            { $match: filter ? JSON.parse(filter) : {} },
+            { $addFields: { studentID: { $first: "$studentID" }, lastname: {$first: "$studentID.lastname"}, firstname: {$first: "$studentID.firstname"}, _id: { $toString: "$_id" } } },
+            { $match: checkDateFilter(filter) },
             { $skip: skip ? parseInt(skip) : 0 },
             { $limit: limit ? parseInt(limit) : 1000 },
             { $sort: sort ? JSON.parse(sort) : { "_id": 1 } }

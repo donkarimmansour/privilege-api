@@ -12,7 +12,7 @@ const StudentValidator= [
    check("language").notEmpty().withMessage("language field is required") ,
    check("hours").notEmpty().withMessage("hours field is required") ,
    check("option").notEmpty().withMessage("option field is required") ,
-   check("session").notEmpty().withMessage("session field is required") ,
+   //check("session").notEmpty().withMessage("session field is required") ,
    check("cin").notEmpty().withMessage("cin field is required") ,
    check("username").notEmpty().withMessage("username field is required") ,
    check("isAccountActivated").notEmpty().withMessage("type field is required"),
