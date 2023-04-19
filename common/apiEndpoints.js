@@ -1,7 +1,7 @@
 const Host = {
-  ROOT: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3001" : "https://privilege.onrender.com",
+  ROOT: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3001" : "http://152.228.163.226/api",
   PREFIX: "/v1/api",
-  FRONTEND: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "https://privilege23.netlify.app",
+  FRONTEND: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "http://152.228.163.226",
 }
 
 const ApiEndpoints = {  
