@@ -68,7 +68,7 @@ const GroupValidator = [
    check("session").notEmpty().withMessage("session field is required"),
    check("teacher").notEmpty().withMessage("teacher field is required"),
    check("option").notEmpty().withMessage("option field is required"),
-   check("calindar").notEmpty().withMessage("calindar field is required"),
+   //check("calindar").notEmpty().withMessage("calindar field is required"),
    check("actions").notEmpty().withMessage("actions field is required")
 ]
 

@@ -290,7 +290,7 @@ const deleteStudent = (id) => {
             } else {
 
                 if (student.group && student.level) {
-                   delete student._doc._id
+                    delete student._doc._id
                     ArchivedStudentsRquest.create({...student._doc}, (errInsert, _res) => {  })
                 }
 
