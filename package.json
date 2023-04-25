@@ -27,7 +27,8 @@
     "dev": "nodemon versions/v1",
     "dev_v1": "nodemon versions/v1",
     "start": "node versions/v1",
-    "test": "node test"
+    "test": "node test",
+    "prod": "NODE_ENV=production node versions/v1"
   },
   "author": "",
   "license": "ISC",

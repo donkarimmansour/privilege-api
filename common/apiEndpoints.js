@@ -1,7 +1,7 @@
 const Host = {
-  ROOT: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3001" : "https://api.centreprivilege.com",
+  ROOT: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3001" : "https://api.modsapk.fun",
   PREFIX: "/v1/api",
-  FRONTEND: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "https://app.centreprivilege.com",
+  FRONTEND: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "https://app.modsapk.fun",
 }
 
 const ApiEndpoints = {  
